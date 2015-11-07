@@ -1,0 +1,19 @@
+---
+# Base configuration of the server
+
+- name: apply common configuration to the server
+  hosts: crispr-exposed
+  remote_user: root
+  tasks:
+    - name: update apt cache
+      apt: update_cache=yes
+    - name: Install system packages
+      apt: pkg={{item}} state=installed
+      with_items:
+        - git
+      
+- name: create user for crispr
+  hosts: crispr-exposed
+  remote_user: root
+  tasks:
+    - user: name=crispr home=yes
