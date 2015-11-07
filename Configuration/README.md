@@ -1,8 +1,8 @@
 # Introduction
 
-The Basic idea is to document the environment so that people can
-reproduce it. Our basic construct is an Ubuntu Server 14.04 LTS, with
-a vanilla install.
+The basic idea is to try and document the environment so that people
+can reproduce it. Our basic construct is an Ubuntu Server 14.04 LTS
+(vanilla install).
 
 Once the server is up and running, the only software you need for the
 proceeding steps of configuration is Ansible.
