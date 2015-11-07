@@ -1,19 +1,37 @@
 ---
 # Base configuration of the server
 
-- name: apply common configuration to the server
-  hosts: crispr-exposed
-  remote_user: root
+- hosts: crispr-exposed
+  user: root
+
+  vars_files: 
+    - vars.yml
+
   tasks:
+    
+    # Basic packages required
     - name: update apt cache
       apt: update_cache=yes
+
     - name: Install system packages
-      apt: pkg={{item}} state=installed
+      apt: pkg={{item}} state=present
       with_items:
         - git
-      
-- name: create user for crispr
-  hosts: crispr-exposed
-  remote_user: root
-  tasks:
-    - user: name=crispr home=yes
+        - mysql-server
+        - python-mysqldb
+
+    # User creation
+    - name: create user for crispr
+      user: name=crispr createhome=yes
+
+    # MySQL 
+    - include: mysql-secure.yml
+
+    - name: MySQL | create crispr db
+      mysql_db: name="{{ mysql_crispr_db }}" state=present
+    - name: MySQL | create crispr user.
+      mysql_user: >
+        user="{{ mysql_crispr_user }}" 
+        password="{{ mysql_crispr_user_passwd }}" 
+        host="{{ hostname }}" 
+        priv="{{ mysql_crispr_db }}".*:ALL state=present
