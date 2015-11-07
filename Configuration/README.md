@@ -17,15 +17,16 @@ runs.
 You can install Ansible through the [ansible PPA](https://launchpad.net/~ansible/+archive/ubuntu/ansible)
 
 ```bash
-sudo apt-add-repository ppa:ansible/ansible
-sudo apt-get update
-sudo apt-get install ansible
+$ sudo apt-add-repository ppa:ansible/ansible
+$ sudo apt-get update
+$ sudo apt-get install ansible
 ```
 
 Configure the target host (here, we work locally, on our server):
 
 ```bash
-echo "127.0.0.1" > /etc/ansible/hosts
+$ echo "[crispr-exposed]" > /etc/ansible/hosts
+$ echo "127.0.0.1" >> /etc/ansible/hosts
 ```
 
 Then, edit the file located at: /etc/ansible/ansible.cfg and uncomment
@@ -41,6 +42,30 @@ This last step is required because Ansible uses the SSH protocol to
 connect and push configurations. Here we are allowing authentication
 by password (instead of public key only), which is ok since we run the
 job locally.
+
+# Development/Test environment
+
+During the development of this application, we used a virtualized
+environment based on [Vagrant](https://www.vagrantup.com/downloads.html).
+
+In case you are interested to tryout the environment and/or further
+develop the application, we have provided the vagrant config
+file. Vagrant is available on many architectures, and can use Virtual
+Box as a VM provider. Once installed, you can clone the CRISPR-Exposed
+repository on github, then navigate to the Configuration folder.
+
+```bash
+$ cd CRISPR-Exposed/Configuration
+$ vagrant up
+$ vagrant ssh
+```
+
+From there, you can configure the environment as you would do for the
+server. The vagrant playbooks described below would all be located in:
+
+```bash
+$ cd /vagrant/
+```
 
 # Configuration
 
