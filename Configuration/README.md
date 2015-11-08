@@ -66,7 +66,7 @@ server. The vagrant playbooks described below would all be located in:
 ```bash
 $ ssh localhost  #this is required to add the host key to the know_hosts
 $ exit
-$ cd /vagrant/
+$ cd /vagrant/Playbooks
 $ ansible-playbook base.yml
 $ ansible-playbook python.yml
 ```

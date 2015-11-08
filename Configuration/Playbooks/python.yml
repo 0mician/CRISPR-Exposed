@@ -31,7 +31,7 @@
   tasks:
     - name: Python | create virtualenv
       pip: >
-        requirements=/vagrant/Playbooks/requirements.txt
+        requirements=/vagrant/requirements.txt
         executable=pip3
         virtualenv=/home/crispr/venv 
         virtualenv_command=virtualenv
