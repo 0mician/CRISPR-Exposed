@@ -1,5 +1,8 @@
 # Tools
 
+We thank the authors of the following tools for publishing their work
+under public licenses.
+
 ## CRT
 
 [CRT](http://www.room220.com/crt/) is a software that can be used to
