@@ -1,0 +1,13 @@
+---
+- name: Pipelines | Setup
+  hosts: crispr-exposed
+  user: root
+  
+  tasks:
+    - name: Pipeline | update apt cache
+      apt: update_cache=yes
+    - name: Pipeline | Install packages
+      apt: pkg={{item}} state=installed
+      with_items: 
+        - default-jre
+

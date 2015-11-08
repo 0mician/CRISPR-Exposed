@@ -64,7 +64,11 @@ From there, you can configure the environment as you would do for the
 server. The vagrant playbooks described below would all be located in:
 
 ```bash
-$ cd /vagrant/
+$ ssh localhost  #this is required to add the host key to the know_hosts
+$ exit
+$ cd /vagrant/Playbooks
+$ ansible-playbook base.yml
+$ ansible-playbook python.yml
 ```
 
 # Configuration

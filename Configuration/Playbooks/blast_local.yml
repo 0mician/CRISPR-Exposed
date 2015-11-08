@@ -1,0 +1,35 @@
+---
+# Python configuration for the application
+
+- name: Python | setup python environment
+  hosts: crispr-exposed
+  user: root
+
+  tasks:
+    - name: BlastDB | Export environment variable
+      shell: "echo BLASTDB=/home/crispr/blastdb/ >> /etc/environment"
+
+- name: BlastDB | configuration
+  hosts: crispr-exposed
+  become: yes
+  become_user: crispr
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: BlastDB | DB Folder
+      file: path="{{ blastdb }}" state=directory mode=0755
+
+    - name: BlastDB | update_blastdb
+      copy: src=/vagrant/Tools/update_blastdb.pl dest=/home/crispr/blastdb mode=0755
+
+    # This last part is not really working yet, needs further investigating
+    - name: BlastDB | fetch latest nt database from NCBI
+      command: perl /home/crispr/blastdb/update_blastdb.pl --passive --timeout 300 --force --verbose nt
+
+    - name: BlastDB | extract nt db archives
+      shell: cd /home/crispr/blastdb/ && ls *.gz |xargs -n1 tar -xzvf
+
+    - name: BlastDB | remove archives
+      shell: cd /home/crispr/blastdb/ && rm *.gz.*
