@@ -2,6 +2,11 @@
 
 hostname: 'localhost'
 
+# user account
+
+username: 'crispr'
+password: 'password'
+
 # mysql
 
 mysql_root_password: 'password'

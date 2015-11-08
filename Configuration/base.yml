@@ -22,7 +22,7 @@
 
     # User creation
     - name: create user for crispr
-      user: name=crispr createhome=yes
+      user: name="{{ username }}" password="{{ password }}" createhome=yes 
 
     # MySQL 
     - include: mysql-secure.yml
