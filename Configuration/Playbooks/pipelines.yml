@@ -4,9 +4,9 @@
   user: root
   
   tasks:
-    - name: Pipeline | update apt cache
+    - name: Pipelines | update apt cache
       apt: update_cache=yes
-    - name: Pipeline | Install packages
+    - name: Pipelines | Install packages
       apt: pkg={{item}} state=installed
       with_items: 
         - default-jre
