@@ -11,8 +11,6 @@ output_folder = "../Data/"
 path_folder = re.compile('(?<=ftp.ncbi.nlm.nih.gov).*')
 refseq = re.compile('(?<=genomes/all/).*')
 
-
-
 try:
     print("Connection to %s" % ncbi_ftp)
     ftp = FTP(ncbi_ftp)
@@ -25,10 +23,12 @@ except:
 df = pd.read_csv(input_report)
 nb_rows = len(df)
 features = df.dtypes.index
+
 counter = 1
 limit = 10 # just for testing
 
-for ftp_address in df["RefSeq FTP"]:
+for row in range(nb_rows):
+    ftp_address = df.ix[row]["RefSeq FTP"]
     print("Fetching annotations and genome %i out of %i" % (counter, nb_rows))
     counter += 1
     if(counter == limit): 
@@ -78,13 +78,13 @@ for ftp_address in df["RefSeq FTP"]:
         # adding meta file
         meta_content = ''
         output_file = open(os.path.join(outdir, rs + "_meta.txt"), 'wb')
-        for row_counter in range(nb_rows):
-            if(df.ix[row_counter]["RefSeq FTP"] == ftp_address):
-                for name in features:
-                    meta_content += "#############\n"
-                    meta_content += name+":\n"
-                    meta_content += str(df.ix[row_counter][name]) + '\n\n'
-                    output_file.write(bytes(meta_content, 'UTF-8'))
+        
+        if(df.ix[row]["RefSeq FTP"] == ftp_address):
+            for name in features:
+                meta_content += "#############\n"
+                meta_content += name+":\n"
+                meta_content += str(df.ix[row][name]) + '\n\n'
+            output_file.write(bytes(meta_content, 'UTF-8'))
         output_file.close()
             
 print("Closing connection")
