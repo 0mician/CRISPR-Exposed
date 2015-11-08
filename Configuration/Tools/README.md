@@ -8,8 +8,6 @@ under public licenses.
 [CRT](http://www.room220.com/crt/) is a software that can be used to
 detect CRISPR arrays in bacterial genomes.
 
----
-
 **Reference**:
 
 Bland C, Ramsey TL, Sabree F, Lowe M, Brown K, Kyrpides NC, Hugenholtz P: 
