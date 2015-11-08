@@ -18,6 +18,6 @@ Bioinformatics. 2007 Jun 18;8(1):209
 
 ## update_blastdb.pl
 
-This [perl script](www.ncbi.nlm.nih.gov/blast/docs/update_blastdb.pl)
+This perls [script](http://www.ncbi.nlm.nih.gov/blast/docs/update_blastdb.pl)
 developed by NCBI can be used to download and update a local copy of
-the [NCBI databases](ftp://ftp.ncbi.nlm.nih.gov/blast/db/)
+the NCBI [databases](ftp://ftp.ncbi.nlm.nih.gov/blast/db/)
