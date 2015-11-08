@@ -1,16 +1,37 @@
 ---
 # Python configuration for the application
 
-- name: setup python environment
+- name: Python | setup python environment
   hosts: crispr-exposed
-  remote_user: root
+  user: root
+
+  vars_files: 
+    - vars.yml
+  
   tasks:
-    - name: update apt cache
+    - name: Python | update apt cache
       apt: update_cache=yes
-    - name: Install system packages
+    - name: Python | Install system packages
       apt: pkg={{item}} state=installed
       with_items:
         - python3-pip
         - python3-dev
-        - python-virtualenv
         
+    - name: Python | Install packages system-wide with Pip
+      pip: name="{{item}}" executable=pip3
+      with_items:
+        - virtualenv
+        - virtualenvwrapper
+
+- name: Python | user virtualenv
+  hosts: crispr-exposed
+  become: yes
+  become_user: crispr
+  
+  tasks:
+    - name: Python | create virtualenv
+      pip: >
+        requirements=/vagrant/requirements.txt
+        executable=pip3
+        virtualenv=/home/crispr/venv 
+        virtualenv_command=virtualenv
