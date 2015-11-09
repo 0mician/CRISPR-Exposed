@@ -1,4 +1,4 @@
-class FastaSequences:
+class Fastas:
     """ Construct an object from a fasta file (containing one or more sequences) 
     Each fasta sequence in a file has a header, and a sequence. They are maintained 
     in a list, where each element is an object Fasta.
@@ -21,14 +21,14 @@ class FastaSequences:
         i = 0
         size = len(self.fastas)
         while(i < size):
-            yield self.fasta[i]
+            yield self.fastas[i]
             i += 1
 
     def __getitem__(self, pos):
         return self.fastas[pos]
 
     def is_empty(self):
-        return len(self.fasta) == 0
+        return len(self.fastas) == 0
 
     def __validate_fasta(self):
         if(not self.fastas):
@@ -51,5 +51,5 @@ class FastaSequences:
                 while(i < size and not content[i].startswith(">")):
                     sequence += content[i].strip("\n")
                     i += 1
-            self.fastas.append(FastaSequences.Fasta(header, sequence))
+            self.fastas.append(Fastas.Fasta(header, sequence))
     
