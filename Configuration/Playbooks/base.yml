@@ -22,7 +22,7 @@
 
     # User creation
     - name: Base | Create user for crispr
-      user: name="{{ username }}" password="{{ password }}" createhome=yes 
+      user: name={{ username }} password={{ password | password_hash('sha512') }} createhome=yes 
 
 
     # Cloning of github repository
