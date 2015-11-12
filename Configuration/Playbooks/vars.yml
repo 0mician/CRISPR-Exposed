@@ -4,13 +4,10 @@ hostname: 'localhost'
 
 # user account
 username: 'crispr'
-password: 'password'
 
 # mysql
-mysql_root_password: 'password'
 mysql_crispr_db: 'crisprdb'
 mysql_crispr_user: 'crispr'
-mysql_crispr_user_passwd: 'password'
 
 # local_blast
 blastdb: '/home/crispr/blastdb/'

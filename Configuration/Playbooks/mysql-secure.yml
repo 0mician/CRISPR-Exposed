@@ -7,6 +7,18 @@
   vars_files:
     - vars.yml
 
+  vars_prompt:
+
+    - name: mysql_root_password
+      prompt: "Enter password for mysql root user"
+      private: yes
+      confirm: yes
+    
+    - name: mysql_crispr_passwd
+      prompt: "Enter mysql crispr user"
+      private: yes
+      confirm: yes
+
   tasks:
 
     # Secure setup
@@ -44,7 +56,7 @@
     - name: MySQL | create crispr user.
       mysql_user: >
         user="{{ mysql_crispr_user }}" 
-        password="{{ mysql_crispr_user_passwd }}" 
+        password="{{ mysql_crispr_passwd }}" 
         host="{{ hostname }}" 
         priv="{{ mysql_crispr_db }}".*:ALL state=present
     
