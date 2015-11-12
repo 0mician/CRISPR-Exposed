@@ -14,6 +14,7 @@ sudo sed -i "s/without-password/yes/" /etc/ssh/sshd_config
 sudo service ssh restart
 
 # configure ansible hosts
-sudo cp /vagrant/hosts /etc/ansible/
+echo '[crispr-exposed]' | sudo tee /etc/ansible/hosts
+echo 'localhost' | sudo tee --append /etc/ansible/hosts
 
 echo '.. done!'
