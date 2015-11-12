@@ -1,33 +1,54 @@
 ---
-# MySQL secure setup
+# MySQL setup
 
-- name: MySQL | Set the root password.
-  mysql_user: user=root password={{ mysql_root_password }} host=localhost
+- hosts: crispr-exposed
+  user: root
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+
+    # Secure setup
+    - name: MySQL_Secure | Set the root password.
+      mysql_user: user=root password={{ mysql_root_password }} host="{{ hostname }}"
   
-- name: MySQL | Configuration file, my.cnf
-  template: src=Templates/root.cnf.j2 dest=/root/.my.cnf
+    - name: MySQL_Secure | Configuration file, my.cnf
+      template: src=../Templates/root.cnf.j2 dest=/root/.my.cnf
     
-- name: MySQL | Delete anonymous MySQL server user for {{ server_hostname }}
-  mysql_user: user="" host="{{ hostname }}" state="absent"
+    - name: MySQL_Secure | Delete anonymous MySQL server user
+      mysql_user: user="" host="{{ hostname }}" state="absent"
       
-- name: MySQL | Delete anonymous MySQL server user for localhost
-  mysql_user: user="" state="absent"
+    - name: MySQL_Secure | Delete anonymous MySQL server user for localhost
+      mysql_user: user="" state="absent"
   
-- name: MySQL | Secure the MySQL root user for IPV6 localhost (::1)
-  mysql_user: user="root" password="{{ mysql_root_password }}" host="::1"
+    - name: MySQL_Secure | Secure the MySQL root user for IPV6 localhost (::1)
+      mysql_user: user="root" password="{{ mysql_root_password }}" host="::1"
 
-- name: MySQL | Secure the MySQL root user for IPV4 localhost (127.0.0.1)
-  mysql_user: user="root" password="{{ mysql_root_password }}" host="127.0.0.1"
+    - name: MySQL_Secure | Secure the MySQL root user for IPV4 localhost (127.0.0.1)
+      mysql_user: user="root" password="{{ mysql_root_password }}" host="127.0.0.1"
   
-- name: MySQL | Secure the MySQL root user for localhost domain (localhost)
-  mysql_user: user="root" password="{{ mysql_root_password }}" host="localhost"
+    - name: MySQL_Secure | Secure the MySQL root user for localhost domain (localhost)
+      mysql_user: user="root" password="{{ mysql_root_password }}" host="{{ hostname }}"
 
-- name: MySQL | Secure the MySQL root user for {{ server_hostname }} domain
-  mysql_user: user="root" password="{{ mysql_root_password }}" host="{{ hostname }}"
+    - name: MySQL_Secure | Secure the MySQL root user for {{ server_hostname }} domain
+      mysql_user: user="root" password="{{ mysql_root_password }}" host="{{ hostname }}"
   
-- name: MySQL | Remove the MySQL test database
-  mysql_db: db=test state=absent
+    - name: MySQL_Secure | Remove the MySQL test database
+      mysql_db: db=test state=absent
 
-- name: Restart MySQL
-  service: name=mysql state=restarted
+    # Custom setup
+    - name: MySQL | create crispr db
+      mysql_db: name="{{ mysql_crispr_db }}" state=present
+    
+    - name: MySQL | create crispr user.
+      mysql_user: >
+        user="{{ mysql_crispr_user }}" 
+        password="{{ mysql_crispr_user_passwd }}" 
+        host="{{ hostname }}" 
+        priv="{{ mysql_crispr_db }}".*:ALL state=present
+    
+    - name: Restart MySQL
+      service: name=mysql state=restarted
+    
     

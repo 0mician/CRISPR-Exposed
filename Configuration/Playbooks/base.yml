@@ -10,10 +10,10 @@
   tasks:
     
     # Basic packages required
-    - name: update apt cache
+    - name: Base | Update apt cache
       apt: update_cache=yes
 
-    - name: Install system packages
+    - name: Base | Install system packages
       apt: pkg={{item}} state=present
       with_items:
         - git
@@ -21,17 +21,14 @@
         - python-mysqldb
 
     # User creation
-    - name: create user for crispr
+    - name: Base | Create user for crispr
       user: name="{{ username }}" password="{{ password }}" createhome=yes 
 
-    # MySQL 
-    - include: mysql-secure.yml
 
-    - name: MySQL | create crispr db
-      mysql_db: name="{{ mysql_crispr_db }}" state=present
-    - name: MySQL | create crispr user.
-      mysql_user: >
-        user="{{ mysql_crispr_user }}" 
-        password="{{ mysql_crispr_user_passwd }}" 
-        host="{{ hostname }}" 
-        priv="{{ mysql_crispr_db }}".*:ALL state=present
+    # Cloning of github repository
+    - name: Base | Github project repository cloning
+      become: yes
+      become_user: crispr
+      git: >
+        repo="{{ git_repo }}"
+        dest="{{ git_cloning_dir }}"
