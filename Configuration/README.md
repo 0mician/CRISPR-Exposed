@@ -19,29 +19,41 @@ You can install Ansible through the [ansible PPA](https://launchpad.net/~ansible
 ```bash
 $ sudo apt-add-repository ppa:ansible/ansible
 $ sudo apt-get update
-$ sudo apt-get install ansible
+$ sudo apt-get -y install ansible
 ```
 
 Configure the target host (here, we work locally, on our server):
 
 ```bash
-$ echo "[crispr-exposed]" > /etc/ansible/hosts
-$ echo "127.0.0.1" >> /etc/ansible/hosts
+$ echo "[crispr-exposed]" | sudo tee /etc/ansible/hosts
+$ echo "localhost" | sudo tee --append /etc/ansible/hosts
 ```
 
-Then, edit the file located at: /etc/ansible/ansible.cfg and uncomment
-the lines:
+Edit the file located at: /etc/ssh/sshd_config:
 
 ```bash
-ask_sudo_pass = True
+$ sudo sed -i "s/without-password/yes/" /etc/ssh/sshd_config
+$ sudo service ssh restart
+```
+
+This previous step will make some sysadmins cringe, and will not make
+it into a production environment. Check with them.
+
+Then, edit the file located at: /etc/ansible/ansible.cfg and uncomment
+the line:
+
+```bash
 ask_pass      = True
 
 ```
 
 This last step is required because Ansible uses the SSH protocol to
 connect and push configurations. Here we are allowing authentication
-by password (instead of public key only), which is ok since we run the
-job locally.
+by password (instead of public key only), which should be ok since we
+run the job locally.
+
+Check out the post_install.sh script if you want to run those commands
+in batch.
 
 # Development/Test environment
 
@@ -73,13 +85,19 @@ $ ansible-playbook python.yml
 
 # Configuration
 
-## Base
+## base.yml
 
 This playbook configures the base environment. This includes
-installing the packages required on the system, creating user, folders,
-the database, etc.
+installing the packages required on the system, creating user, and
+cloning the github repo of the project.
 
-## Python environment
+## mysql-secure.yml
+
+Takes care of the setup of MySQL and creates a database for the
+application and a user to access it. It also goes through some
+housekeeping for a new installation of MySQL.
+
+## python.yml
 
 Though Ubuntu 14.04 uses python 2.7 as default (a good thing for us,
 because Ansible won't run on python 3), our app is contained within a
@@ -87,7 +105,15 @@ python 3 virtual environment. So, this playbook installs the tools we
 need. It includes creating the virtual environment, installing pip
 packages, etc.
 
-## Web application
+## pipelines.yml
 
-Everything related to serving our webapp. This playbook installs and
-configures apache2 to serve the django app.
+Sets up the tools required by our different pipelines. 
+
+## blast-local.yml
+
+Uses NCBI's update-blastdb script to download and maintain a local
+copy of the [nucleotide database](ftp://ftp.ncbi.nlm.nih.gov/blast/db/README).
+
+## webapp.yml
+
+Everything related to serving our webapp. To be defined
