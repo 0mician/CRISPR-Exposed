@@ -26,12 +26,8 @@
         src={{ git_cloning_dir }}Configuration/Tools/update_blastdb.pl 
         dest=/home/crispr/blastdb mode=0755
 
-    # This last part is not really working yet, needs further investigating
-    # name: BlastDB | fetch latest nt database from NCBI
-    #  command: perl /home/crispr/blastdb/update_blastdb.pl --passive --timeout 300 --force --verbose nt
+    - name: BlastDB | fetch latest nt database from NCBI
+      command: chdir=/home/crispr/blastdb /usr/bin/perl update_blastdb.pl --passive --timeout 300 --verbose nt
 
-    # name: BlastDB | extract nt db archives
-    #  shell: cd /home/crispr/blastdb/ && ls *.gz |xargs -n1 tar -xzvf
-
-    # name: BlastDB | remove archives
-    #  shell: cd /home/crispr/blastdb/ && rm *.gz.*
+    - name: BlastDB | extract nt db archives
+      command: chdir=/home/crispr/blastdb/ ls *.gz |xargs -n1 tar --keep-newer-files -xzvf 
