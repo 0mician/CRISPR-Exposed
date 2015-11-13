@@ -1,6 +1,7 @@
 import re
 import os
 import gzip
+import json
 
 import pandas as pd
 from ftplib import FTP
@@ -34,7 +35,7 @@ for row in range(nb_rows):
     if(counter == limit): 
         break
 
-    if(ftp_address != "-"):
+    if(ftp_address != "-"): # not taking genbank into account
         folder = re.search(path_folder, ftp_address).group()
 
         # create destination dir with refseq as folder name
@@ -42,6 +43,8 @@ for row in range(nb_rows):
         outdir = os.path.join(output_folder, rs)
         if not os.path.exists(outdir):
             os.makedirs(outdir)
+        else:
+            continue
         
         # fetch ftp files for sequence and annotation
         ftp.cwd(folder)
@@ -75,17 +78,9 @@ for row in range(nb_rows):
 
         print("%s fetched!" % rs)
         
-        # adding meta file
-        meta_content = ''
-        output_file = open(os.path.join(outdir, rs + "_meta.txt"), 'wb')
-        
         if(df.ix[row]["RefSeq FTP"] == ftp_address):
-            for name in features:
-                meta_content += "#############\n"
-                meta_content += name+":\n"
-                meta_content += str(df.ix[row][name]) + '\n\n'
-            output_file.write(bytes(meta_content, 'UTF-8'))
-        output_file.close()
+            meta_content = { name:str(df.ix[row][name]) for name in features }
+            json.dump(meta_content, open(os.path.join(outdir, rs + "_meta.txt"), 'w'))
             
 print("Closing connection")
 ftp.quit()
