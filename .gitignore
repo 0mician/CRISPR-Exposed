@@ -1,6 +1,7 @@
 # Python files
 *.pyc
 venv/
+db.sqlite3
 
 # emacs specific files
 
