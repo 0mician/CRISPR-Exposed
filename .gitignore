@@ -22,7 +22,7 @@ emacs-config.el
 .vagrant/
 
 # various 
-Data/
+data/
 .~lock.*
 
 # Just for test

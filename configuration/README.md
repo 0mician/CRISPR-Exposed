@@ -67,7 +67,7 @@ Box as a VM provider. Once installed, you can clone the CRISPR-Exposed
 repository on github, then navigate to the Configuration folder.
 
 ```bash
-$ cd CRISPR-Exposed/Configuration
+$ cd CRISPR-Exposed/configuration
 $ vagrant up
 $ vagrant ssh
 ```
@@ -78,7 +78,7 @@ server. The vagrant playbooks described below would all be located in:
 ```bash
 $ ssh localhost  #this is required to add the host key to the know_hosts
 $ exit
-$ cd /vagrant/Playbooks
+$ cd /vagrant/playbooks
 $ ansible-playbook base.yml
 $ ansible-playbook python.yml
 ```

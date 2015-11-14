@@ -1,7 +1,7 @@
 import os
 import re
 
-data = "../Data/"
+data = "../data/"
 
 crt_re = re.compile('.*\.crt\.report')
 dir_list = os.listdir(data)

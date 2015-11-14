@@ -21,5 +21,5 @@
 
   tasks:
     - name: Pipelines | Create folder
-      file: path="{{ git_cloning_dir }}"Data/ state=directory mode=0755
+      file: path="{{ git_cloning_dir }}"data/ state=directory mode=0755
 

@@ -1,11 +1,11 @@
 import os
 import re
 
-from Utils import *
+from utils import *
 
-crt = "../Configuration/Tools/CRT1.2-CLI.jar"
+crt = "../configuration/tools/CRT1.2-CLI.jar"
 
-data = "../Data/"
+data = "../data/"
 
 fasta_re = re.compile('.*\_genomic.fna')
 dir_list = os.listdir(data)

@@ -7,8 +7,8 @@ import pandas as pd
 from ftplib import FTP
 
 ncbi_ftp = "ftp.ncbi.nlm.nih.gov"
-input_report = "GenomesList/genomes_proks.csv"
-output_folder = "../Data/"
+input_report = "genomes_list/genomes_proks.csv"
+output_folder = "../data/"
 path_folder = re.compile('(?<=ftp.ncbi.nlm.nih.gov).*')
 refseq = re.compile('(?<=genomes/all/).*')
 
