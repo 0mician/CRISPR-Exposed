@@ -1,6 +1,7 @@
 # Python files
 *.pyc
 venv/
+db.sqlite3
 
 # emacs specific files
 
@@ -22,7 +23,8 @@ emacs-config.el
 .vagrant/
 
 # various 
-Data/
+data/
+.~lock.*
 
 # Just for test
 temp_hamed/
