@@ -26,6 +26,7 @@
         - git
         - mysql-server
         - python-mysqldb
+        - expect-dev   # useful for pipeline progress 
 
     # User creation
     - name: Base | Create user for crispr

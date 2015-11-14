@@ -23,6 +23,7 @@ emacs-config.el
 
 # various 
 Data/
+.~lock.*
 
 # Just for test
 temp_hamed/
