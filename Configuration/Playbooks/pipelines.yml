@@ -11,3 +11,15 @@
       with_items: 
         - default-jre
 
+- name: Pipelines | Data folder
+  hosts: crispr-exposed
+  become: yes
+  become_user: crispr
+
+  vars_files: 
+    - vars.yml
+
+  tasks:
+    - name: Pipelines | Create folder
+      file: path="{{ git_cloning_dir }}"Data/ state=directory mode=0755
+

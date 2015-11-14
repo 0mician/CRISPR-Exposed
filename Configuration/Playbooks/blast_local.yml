@@ -30,4 +30,4 @@
       command: chdir=/home/crispr/blastdb /usr/bin/perl update_blastdb.pl --passive --timeout 300 --verbose nt
 
     - name: BlastDB | extract nt db archives
-      command: chdir=/home/crispr/blastdb/ ls *.gz |xargs -n1 tar --keep-newer-files -xzvf 
+      shell: chdir=/home/crispr/blastdb/ ls *.gz |xargs -n1 tar --keep-newer-files -xzvf 
