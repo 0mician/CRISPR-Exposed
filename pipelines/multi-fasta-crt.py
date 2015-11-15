@@ -1,5 +1,6 @@
 import os
 import re
+
 from utils.fastas import *
 
 crt = "../configuration/tools/CRT1.2-CLI.jar"
@@ -29,7 +30,7 @@ for genome_dir in dir_list:
                 
                 ## creating a temporary fasta file from a fasta in a multifasta
                 fasta_content = ">" + fasta.header + '\n' + fasta.seq
-                fasta_output_path = path + fasta.header.replace(" ", "_")
+                fasta_output_path = path + fasta.header.split(' ', 1)[0]
                 fasta_output = open(fasta_output_path + ".fasta.tmp", 'w')
                 fasta_output.write(fasta_content)
                 fasta_output.close()

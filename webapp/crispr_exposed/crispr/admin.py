@@ -11,7 +11,7 @@ class StrainAdmin(admin.ModelAdmin):
             }),
         ('Assembly information', {
             'fields' : ('assembly', 'level', 'scaffolds', 'refseq_ftp', 
-                        'genbank_ftp', 'bio_sample', 'bio_project')
+                        'genbank_ftp', 'bio_sample', 'bio_project', 'wgs')
             }),
         ('Other information', {
             'fields' : ('size', 'gc_content', 'genes', 'proteins', 'release_date', 
