@@ -9,12 +9,16 @@ fasta_re = re.compile('.*\_genomic.fna')
 
 dir_list = os.listdir(data)
 
-print("Generating CRT output ...\n")
+# tracking progress
+number_of_folders = len([name for name in os.listdir(data)])
+count = 1
 
 ## loop in genomes in Data directory
 for genome_dir in dir_list:
     genome_dir_list = os.listdir(data+genome_dir)
-    
+    print("Processing folder %i out of %i" % (count, number_of_folders))
+    count += 1
+
     ## loop in genome directory looking for genome fasta file(s)
     for fasta_file in genome_dir_list:
         input_file = re.search(fasta_re,fasta_file)
@@ -36,7 +40,7 @@ for genome_dir in dir_list:
                 fasta_output.close()
                 
                 ## applying CRT > java -cp /path/to/CRT crt [input] [output]
-                os.system('java -cp ' + crt + ' crt ' + fasta_output_path + ".fasta.tmp" + ' ' + fasta_output_path + '.crt.report')
+                os.system('java -cp ' + crt + ' crt ' + fasta_output_path + ".fasta.tmp" + ' ' + fasta_output_path + '.crt.report' + '> /dev/null 2>&1')
                 ## removing temporary fasta files
                 os.system('rm ' + path + '*.tmp')
 
