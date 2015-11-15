@@ -7,7 +7,7 @@ crt = "../Configuration/Tools/CRT1.2-CLI.jar"
 
 data = "../Data/"
 
-fasta_re = re.compile('.*\_genomic.fna')
+fasta_re = re.compile('.*\.crt\.report')
 dir_list = os.listdir(data)
 
 for genome_dir in dir_list:
