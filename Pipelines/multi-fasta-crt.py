@@ -15,14 +15,14 @@ for genome_dir in dir_list:
     genome_dir_list = os.listdir(data+genome_dir)
     
     ## loop in genome directory looking for genome fasta file(s)
-    for fasta_file in genome_dir_list:
-        input_file = re.search(fasta_re,fasta_file)
+    for _file in genome_dir_list:
+        fasta_file = re.search(fasta_re, _file)
         
-        if(input_file):
+        if(fasta_file):
             
             ## set the absolute path to genome dir
             path = data + genome_dir + '/'
-            fastas = Fastas(path + input_file.group())
+            fastas = Fastas(path + fasta_file.group())
             
             ## loop in (multi)fasta files using Utils.fastas
             for fasta in fastas:
