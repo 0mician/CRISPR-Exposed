@@ -1,0 +1,42 @@
+---
+# Base configuration of the server
+
+- hosts: crispr-exposed
+  user: root
+
+  vars_files: 
+    - vars.yml
+
+  vars_prompt:
+
+    - name: password
+      prompt: "Enter password for base user"
+      private: yes
+      confirm: yes
+
+  tasks:
+    
+    # Basic packages required
+    - name: Base | Update apt cache
+      apt: update_cache=yes
+
+    - name: Base | Install system packages
+      apt: pkg={{item}} state=present
+      with_items:
+        - git
+        - mysql-server
+        - python-mysqldb
+        - expect-dev   # useful for pipeline progress 
+
+    # User creation
+    - name: Base | Create user for crispr
+      user: name={{ username }} password={{ password | password_hash('sha512') }} createhome=yes 
+
+
+    # Cloning of github repository
+    - name: Base | Github project repository cloning
+      become: yes
+      become_user: crispr
+      git: >
+        repo="{{ git_repo }}"
+        dest="{{ git_cloning_dir }}"

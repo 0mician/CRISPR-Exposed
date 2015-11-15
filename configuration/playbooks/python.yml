@@ -1,0 +1,40 @@
+---
+# Python configuration for the application
+
+- name: Python | setup python environment
+  hosts: crispr-exposed
+  user: root
+
+  vars_files: 
+    - vars.yml
+  
+  tasks:
+    - name: Python | update apt cache
+      apt: update_cache=yes
+    - name: Python | Install system packages
+      apt: pkg={{item}} state=installed
+      with_items:
+        - python3-pip
+        - python3-dev
+        
+    - name: Python | Install packages system-wide with Pip
+      pip: name="{{item}}" executable=pip3
+      with_items:
+        - virtualenv
+        - virtualenvwrapper
+
+- name: Python | user virtualenv
+  hosts: crispr-exposed
+  become: yes
+  become_user: crispr
+  
+  vars_files: 
+    - vars.yml
+
+  tasks:
+    - name: Python | create virtualenv
+      pip: >
+        requirements="{{ git_cloning_dir }}"configuration/requirements.txt
+        executable=pip3
+        virtualenv="{{ virtual_env }}" 
+        virtualenv_command=virtualenv

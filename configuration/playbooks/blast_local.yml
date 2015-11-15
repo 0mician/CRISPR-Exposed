@@ -1,0 +1,33 @@
+---
+# Local blast configuration
+
+- name: BlastDB | Setup
+  hosts: crispr-exposed
+  user: root
+
+  tasks:
+    - name: BlastDB | Export environment variable
+      shell: "echo BLASTDB=/home/crispr/blastdb/ >> /etc/environment"
+
+- name: BlastDB | configuration
+  hosts: crispr-exposed
+  become: yes
+  become_user: crispr
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: BlastDB | DB Folder
+      file: path="{{ blastdb }}" state=directory mode=0755
+
+    - name: BlastDB | update_blastdb
+      copy: 
+        src={{ git_cloning_dir }}Configuration/Tools/update_blastdb.pl 
+        dest=/home/crispr/blastdb mode=0755
+
+    - name: BlastDB | fetch latest nt database from NCBI
+      command: chdir=/home/crispr/blastdb /usr/bin/perl update_blastdb.pl --passive --timeout 300 --verbose nt
+
+    - name: BlastDB | extract nt db archives
+      shell: chdir=/home/crispr/blastdb/ ls *.gz |xargs -n1 tar --keep-newer-files -xzvf 

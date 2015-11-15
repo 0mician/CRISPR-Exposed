@@ -1,0 +1,20 @@
+### Change the password values 
+
+hostname: 'localhost'
+
+# user account
+username: 'crispr'
+
+# mysql
+mysql_crispr_db: 'crisprdb'
+mysql_crispr_user: 'crispr'
+
+# local_blast
+blastdb: '/home/crispr/blastdb/'
+
+# github 
+git_repo: 'https://github.com/Milt0n/CRISPR-Exposed.git'
+git_cloning_dir: '/home/crispr/CRISPR-Exposed/'
+
+# python
+virtual_env: '/home/crispr/venv'
