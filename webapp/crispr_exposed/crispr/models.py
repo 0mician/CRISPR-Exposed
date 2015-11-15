@@ -42,3 +42,4 @@ class Strain(models.Model):
 
     def __str__(self):
         return "refseq: %s\norganism name: %s" % (self.refseq_id, self.organism_name)
+
