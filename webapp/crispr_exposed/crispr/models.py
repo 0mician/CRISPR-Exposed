@@ -43,3 +43,21 @@ class Strain(models.Model):
     def __str__(self):
         return "refseq: %s\norganism name: %s" % (self.refseq_id, self.organism_name)
 
+
+class CrisprArray(models.Model):
+    handle = models.ForeignKey(Strain)
+    array_id = models.IntegerField()
+
+    def __str__(self):
+        return self.handle.handle
+
+class CrisprEntry(models.Model):
+    array = models.ForeignKey(CrisprArray)
+    position = models.IntegerField()
+    length_repeat = models.IntegerField(null=True)
+    length_spacer = models.IntegerField(null=True)
+    repeat = models.CharField(max_length=100)
+    spacer = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.spacer
