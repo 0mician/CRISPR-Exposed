@@ -37,7 +37,7 @@ class Strain(models.Model):
     genbank_ftp = models.URLField(null=True, blank=True)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.refseq_id)
         super(Strain, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -45,19 +45,21 @@ class Strain(models.Model):
 
 
 class CrisprArray(models.Model):
-    handle = models.ForeignKey(Strain)
+    refseq_id = models.ForeignKey(Strain)
     array_id = models.IntegerField()
+    start = models.IntegerField()
+    end = models.IntegerField()
 
     def __str__(self):
-        return self.handle.handle
+        return str(self.refseq_id)
 
 class CrisprEntry(models.Model):
     array = models.ForeignKey(CrisprArray)
     position = models.IntegerField()
-    length_repeat = models.IntegerField(null=True)
-    length_spacer = models.IntegerField(null=True)
     repeat = models.CharField(max_length=100)
     spacer = models.CharField(max_length=100)
+    length_repeat = models.IntegerField(null=True)
+    length_spacer = models.IntegerField(null=True)
 
     def __str__(self):
         return self.spacer
