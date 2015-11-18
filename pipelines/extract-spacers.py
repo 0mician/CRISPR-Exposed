@@ -68,7 +68,8 @@ for genome_dir in dir_list:
                 if(new_array and re.match(position_regex, entry[0])):
                     line = []
                     if(re.match(nucleotide_regex, entry[3])):
-                        line.extend((entry[0], entry[2], entry[3], entry[4]))
+                        lengths = re.findall(r'\d+', entry[4])
+                        line.extend((entry[0], entry[2], entry[3], lengths[0], lengths[1]))
                         crispr_ls.append(line)
 
             if(crispr):
