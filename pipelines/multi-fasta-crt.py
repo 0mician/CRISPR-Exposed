@@ -31,7 +31,8 @@ for genome_dir in dir_list:
                 
                 ## loop in (multi)fasta files using Utils.fastas
                 for fasta in fastas:
-                
+                    if(len(fasta) < 5000):
+                        continue
                     ## creating a temporary fasta file from a fasta in a multifasta
                     fasta_content = ">" + fasta.header + '\n' + fasta.seq
                     fasta_output_path = path + fasta.header.split(' ', 1)[0]
@@ -40,7 +41,7 @@ for genome_dir in dir_list:
                     fasta_output.close()
                     
                     ## applying CRT > java -cp /path/to/CRT crt [input] [output]
-                    os.system('java -cp ' + crt + ' crt ' + fasta_output_path + ".fasta.tmp" + ' ' + fasta_output_path + '.crt.report' + '> /dev/null 2>&1')
+                    os.system('java -cp ' + crt + ' crt ' + fasta_output_path + ".fasta.tmp" + ' ' + fasta_output_path + '.crt.report' + '>> crt.log 2>&1')
                     ## removing temporary fasta files
                     os.system('rm ' + path + '*.tmp')
         except FileNotFoundError as e:
