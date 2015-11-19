@@ -31,7 +31,7 @@ class CrisprEntryAdmin(admin.ModelAdmin):
     list_display = ['array', 'position', 'repeat', 'spacer']
     fieldsets = (
         ('Information', {
-            'fields' : ('refseq_id', 'position', 'repeat', 'spacer',
+            'fields' : ('array', 'position', 'repeat', 'spacer',
                         'length_repeat', 'length_spacer')
         }),
     )
