@@ -28,3 +28,8 @@ data/
 
 # Just for test
 temp_hamed/
+
+# reports
+pipelines/crt_error.txt
+config.ini
+
