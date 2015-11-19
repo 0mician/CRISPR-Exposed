@@ -22,12 +22,29 @@
   tasks:
 
     # Secure setup
-    - name: MySQL_Secure | Set the root password.
-      mysql_user: user=root password={{ mysql_root_password }} host="{{ hostname }}"
-  
-    - name: MySQL_Secure | Configuration file, my.cnf
-      template: src=../Templates/root.cnf.j2 dest=/root/.my.cnf
-    
+    - name: MySQL_Secure | Start the MySQL service
+      service: 
+        name: mysql 
+        state: started
+        enabled: true
+
+    - name: update mysql root password for all root accounts
+      mysql_user: 
+        name: root 
+        host: "{{ item }}" 
+        password: "{{ mysql_root_password }}"
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+        check_implicit_admin: yes
+        priv: "*.*:ALL,GRANT"
+      with_items:
+        - 127.0.0.1
+        - ::1
+        - localhost 
+
+    - name: MySQL_Secure | Configuration file, edit my.cnf
+      shell: echo '[client]' > /root/.my.cnf && echo 'user=root' >> /root/.my.cnf && echo 'password={{ mysql_root_password }}'>> /root/.my.cnf
+
     - name: MySQL_Secure | Delete anonymous MySQL server user
       mysql_user: user="" host="{{ hostname }}" state="absent"
       
