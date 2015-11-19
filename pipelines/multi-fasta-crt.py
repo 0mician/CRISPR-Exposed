@@ -16,7 +16,7 @@ count = 1
 ## loop in genomes in Data directory
 for genome_dir in dir_list:
     genome_dir_list = os.listdir(data+genome_dir)
-    print("Processing folder %i out of %i" % (count, number_of_folders))
+    print("Processing folder %i out of %i (%s)" % (count, number_of_folders, genome_dir))
     count += 1
 
     ## loop in genome directory looking for genome fasta file(s)
