@@ -31,7 +31,7 @@ for genome_dir in dir_list:
                 
                 ## loop in (multi)fasta files using Utils.fastas
                 for fasta in fastas:
-                    if(len(fasta) < 5000):
+                    if(len(fasta.seq) < 5000):
                         continue
                     ## creating a temporary fasta file from a fasta in a multifasta
                     fasta_content = ">" + fasta.header + '\n' + fasta.seq
