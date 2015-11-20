@@ -37,9 +37,29 @@ class Strain(models.Model):
     genbank_ftp = models.URLField(null=True, blank=True)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.refseq_id)
         super(Strain, self).save(*args, **kwargs)
 
     def __str__(self):
         return "refseq: %s\norganism name: %s" % (self.refseq_id, self.organism_name)
 
+
+class CrisprArray(models.Model):
+    refseq_id = models.ForeignKey(Strain)
+    array_id = models.IntegerField()
+    start = models.IntegerField()
+    end = models.IntegerField()
+
+    def __str__(self):
+        return str(self.refseq_id)
+
+class CrisprEntry(models.Model):
+    array = models.ForeignKey(CrisprArray)
+    position = models.IntegerField()
+    repeat = models.CharField(max_length=100)
+    spacer = models.CharField(max_length=100)
+    length_repeat = models.IntegerField(null=True)
+    length_spacer = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.spacer

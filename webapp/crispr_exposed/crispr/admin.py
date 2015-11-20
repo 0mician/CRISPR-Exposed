@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from crispr.models import Strain
+from crispr.models import Strain, CrisprArray, CrisprEntry
 
 class StrainAdmin(admin.ModelAdmin):
     list_display = ['refseq_id', 'organism_name', 'group', 'sub_group']
@@ -19,4 +19,23 @@ class StrainAdmin(admin.ModelAdmin):
         })
     )
 
+class CrisprArrayAdmin(admin.ModelAdmin):
+    list_display = ['refseq_id', 'array_id', 'start', 'end']
+    fieldsets = (
+        ('Information', {
+            'fields' : ('refseq_id', 'array_id', 'start', 'end')
+        }),
+    )
+
+class CrisprEntryAdmin(admin.ModelAdmin):
+    list_display = ['array', 'position', 'repeat', 'spacer']
+    fieldsets = (
+        ('Information', {
+            'fields' : ('array', 'position', 'repeat', 'spacer',
+                        'length_repeat', 'length_spacer')
+        }),
+    )
+
 admin.site.register(Strain, StrainAdmin)
+admin.site.register(CrisprArray, CrisprArrayAdmin)
+admin.site.register(CrisprEntry, CrisprEntryAdmin)

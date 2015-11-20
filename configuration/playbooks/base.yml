@@ -26,7 +26,8 @@
         - git
         - mysql-server
         - python-mysqldb
-        - expect-dev   # useful for pipeline progress 
+        - libmysqlclient-dev # for mysqlclient (mysql plugin django)
+        - expect-dev         # useful for pipeline progress 
 
     # User creation
     - name: Base | Create user for crispr
