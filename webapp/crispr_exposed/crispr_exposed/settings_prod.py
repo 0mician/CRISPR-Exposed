@@ -121,7 +121,7 @@ LOGGING = {
         'file' : {
             'level' : 'DEBUG',
             'class' : 'logging.FileHandler',
-            'filename' : 'crispr_exposed.log', 
+            'filename' : '/var/log/django/crispr_exposed.log', 
             'formatter' : 'standard'
         },
     },
