@@ -14,10 +14,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import configparser
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+config = configparser.ConfigParser()
+config.read(os.path.join(BASE_DIR, os.path.join('crispr_exposed', 'config.ini')))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -121,7 +121,7 @@ LOGGING = {
         'file' : {
             'level' : 'DEBUG',
             'class' : 'logging.FileHandler',
-            'filename' : 'website_bbc.log', #'/var/log/django/website_bbc.log',
+            'filename' : 'crispr_exposed.log', 
             'formatter' : 'standard'
         },
     },
