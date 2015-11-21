@@ -1,0 +1,24 @@
+---
+- name: Webserver | Setup
+  hosts: crispr-exposed
+  user: root
+  
+  tasks:
+    - name: Webserver | update apt cache
+      apt: update_cache=yes
+
+    - name: Webserver | Install packages
+      apt: pkg={{item}} state=installed
+      with_items: 
+        - apache2
+        - libapache2-mod-wsgi-py3
+
+    - name: Webserver | vhost file
+      template: >
+        src=../templates/000-default.conf 
+        dest=/etc/apache2/sites-enabled/
+        backup=yes
+
+    - name: Webserver | Restart Apache2
+      service: name=apache2 state=restarted
+    
