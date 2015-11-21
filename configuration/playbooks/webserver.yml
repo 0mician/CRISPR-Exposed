@@ -19,6 +19,14 @@
         dest=/etc/apache2/sites-enabled/
         backup=yes
 
+    - name: Webserver | log file location
+      file: >
+        path="/var/log/django" 
+        state=directory 
+        owner=www-data
+        group=www-data
+        mode=0755
+
     - name: Webserver | Restart Apache2
       service: name=apache2 state=restarted
     
