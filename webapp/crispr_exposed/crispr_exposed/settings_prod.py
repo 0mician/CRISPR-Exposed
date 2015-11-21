@@ -26,9 +26,9 @@ config.read(os.path.join(BASE_DIR, os.path.join('crispr_exposed', 'config.ini'))
 SECRET_KEY = config['DjangoSecretKey']['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
