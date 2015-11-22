@@ -2,7 +2,7 @@ import json
 import re
 import datetime
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crispr_exposed.settings_prod')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crispr_exposed.settings') #crispr_exposed.settings_prod
 
 import django
 django.setup()
