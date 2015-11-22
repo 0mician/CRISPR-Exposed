@@ -1,0 +1,24 @@
+<h1>Search Result:</h1>
+<br/>
+
+<p>You searched for: <strong>{{ query }}</strong></p>
+
+{% if strain_result %}
+    <p>Found <strong>{{ strain_result|length }}</strong> result{{ strain_result|pluralize }}.</p>
+    <table border=1 width=100%>
+        <tr>
+            <td><strong>Organism Name</strong></td>
+            <td><strong>Refseq ID</strong></td>
+            <td><strong>Strain</strong></td>        
+        </tr>
+        {% for item in strain_result %}
+        <tr>
+            <td>{{ item.organism_name }}</td>
+            <td>{{ item.refseq_id }}</td>
+            <td>{{ item.strain }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No item matched your search criteria.</p>
+{% endif %}

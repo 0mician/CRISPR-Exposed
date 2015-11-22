@@ -26,7 +26,7 @@ nb_rows = len(df)
 features = df.dtypes.index
 
 counter = 1
-limit = 10 # just for testing
+limit = 100 # just for testing
 
 for row in range(nb_rows):
     ftp_address = df.ix[row]["RefSeq FTP"]
