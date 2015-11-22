@@ -20,11 +20,9 @@
         </tr>
         {% for item in strain_result %}
         <tr>
-          <a href="/crispr/details/{{ item.slug }}">
-            <td>{{ item.organism_name }}</td>
-            <td>{{ item.refseq_id }}</td>
-            <td>{{ item.strain }}</td>
-          </a>
+          <td><a href="/crispr/details/{{ item.slug }}">{{ item.organism_name }}</a></td>
+          <td>{{ item.refseq_id }}</td>
+          <td>{{ item.strain }}</td>
         </tr>
         {% endfor %}
     </table>

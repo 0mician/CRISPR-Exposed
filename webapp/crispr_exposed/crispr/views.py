@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Strain
+from .models import Strain, CrisprEntry, CrisprArray
 
 def index(request):
     return render(request, "crispr/index.html")
@@ -20,12 +20,12 @@ def search_result(request):
     else:
         return HttpResponse("Please  submit a search Term")
 
-def crispr_details(request, refseq):
+def crispr_details(request, slug):
     context_dict = {}
     try:
         strain = Strain.objects.get(slug=slug)
         context_dict['strain'] = strain
-        crispr_array = CrisprArray.objects.filter(handle=strain)
+        crispr_array = CrisprArray.objects.filter(refseq_id=strain)
         context_dict['crispr_array'] = crispr_array
 
     except Strain.DoesNotExist:
