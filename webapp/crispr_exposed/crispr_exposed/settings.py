@@ -115,7 +115,7 @@ LOGGING = {
         'file' : {
             'level' : 'DEBUG',
             'class' : 'logging.FileHandler',
-            'filename' : 'website_bbc.log', #'/var/log/django/website_bbc.log',
+            'filename' : 'crispr_exposed.log',
             'formatter' : 'standard'
         },
     },

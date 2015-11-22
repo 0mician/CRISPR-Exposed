@@ -28,7 +28,7 @@
         state: started
         enabled: true
 
-    - name: update mysql root password for all root accounts
+    - name: MySQL_Secure | update mysql root password for all root accounts
       mysql_user: 
         name: root 
         host: "{{ item }}" 
@@ -77,7 +77,7 @@
         host="{{ hostname }}" 
         priv="{{ mysql_crispr_db }}".*:ALL state=present
     
-    - name: Restart MySQL
+    - name: MySQL | Restart MySQL
       service: name=mysql state=restarted
     
     

@@ -2,7 +2,7 @@ import json
 import re
 import datetime
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crispr_exposed.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crispr_exposed.settings_prod')
 
 import django
 django.setup()
@@ -40,7 +40,17 @@ def add_strain(
         level,
         refseq_ftp,
         genbank_ftp):
-    
+
+    # problems with incomplete data - quick fix
+    if(clade_id == "-"):
+        clade_id = -1
+    if(scaffolds == "-"):
+        scaffolds = -1
+    if(genes == "-"):
+        genes = -1
+    if(proteins == "-"):
+        proteins = -1
+
     strain = Strain.objects.get_or_create(
         refseq_id=refseq_id,
         organism_name=organism_name,
@@ -83,16 +93,19 @@ def add_crispr_entry(array, position, repeat, spacer, length_repeat, length_spac
 def populate_db():
     # keep track of progress
     number_of_folders = len([name for name in os.listdir(data)])
-    count = 1
+    progress_counter = 1
 
     ASSEMBLY_LEVEL = {
         'Complete Genome': 'COMP',
         'Chromosome': 'CHRO',
-        'Scaffolds': 'SCAF',
-        'Contigs' : 'CONT'}
+        'Scaffold': 'SCAF',
+        'Contig' : 'CONT'}
 
     dir_list = os.listdir(data)
     for folder in dir_list:
+
+        print("Processing folder %i out of %i" % (progress_counter, number_of_folders))
+        progress_counter += 1
 
         # add strain (info stored in the meta.txt file)
         strain = None
