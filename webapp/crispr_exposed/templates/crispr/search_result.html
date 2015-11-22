@@ -1,5 +1,12 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Search{% endblock %}
+
+{% block body_block %}
+
 <h1>Search Result:</h1>
-<br/>
 
 <p>You searched for: <strong>{{ query }}</strong></p>
 
@@ -22,3 +29,5 @@
 {% else %}
     <p>No item matched your search criteria.</p>
 {% endif %}
+
+{% endblock %}
