@@ -20,3 +20,14 @@ def search_result(request):
     else:
         return HttpResponse("Please  submit a search Term")
 
+def crispr_details(request, refseq):
+    context_dict = {}
+    try:
+        strain = Strain.objects.get(slug=slug)
+        context_dict['strain'] = strain
+        crispr_array = CrisprArray.objects.filter(handle=strain)
+        context_dict['crispr_array'] = crispr_array
+
+    except Strain.DoesNotExist:
+        pass
+    return render(request, 'crispr/details.html', context_dict)
