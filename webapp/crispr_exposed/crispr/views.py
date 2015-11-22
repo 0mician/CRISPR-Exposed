@@ -16,9 +16,7 @@ def search_result(request):
             query += refseq_id_q
         else:
             strain_result = Strain.objects.filter(organism_name__icontains=organism_name_q)
-        return render(request, 'search_result.html', {'strain_result' : strain_result, 'query' : query})
+        return render(request, 'crispr/search_result.html', {'strain_result' : strain_result, 'query' : query})
     else:
         return HttpResponse("Please  submit a search Term")
-    #res = request.POST.get('q')
-    #return HttpResponse(res)
-    #return render(request, "search_result.html")
+
