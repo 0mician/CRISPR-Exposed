@@ -1,4 +1,10 @@
-<h1>Welcome to CRISPR-Exposed</h1>
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Search{% endblock %}
+
+{% block body_block %}
 
 <div>
     <h3>Search</h3>
@@ -11,3 +17,5 @@
         {% csrf_token %}
     </form>
 </div>
+
+{% endblock %}
