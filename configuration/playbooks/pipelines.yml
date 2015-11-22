@@ -10,6 +10,8 @@
       apt: pkg={{item}} state=installed
       with_items: 
         - default-jre
+        - ncbi-blast+
+        - blast2
 
 - name: Pipelines | Data folder
   hosts: crispr-exposed
@@ -22,4 +24,3 @@
   tasks:
     - name: Pipelines | Create folder
       file: path="{{ git_cloning_dir }}"data/ state=directory mode=0755
-
