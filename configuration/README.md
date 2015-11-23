@@ -44,7 +44,6 @@ the line:
 
 ```bash
 ask_pass      = True
-
 ```
 
 This last step is required because Ansible uses the SSH protocol to
@@ -81,6 +80,10 @@ $ exit
 $ cd /vagrant/playbooks
 $ ansible-playbook base.yml
 $ ansible-playbook python.yml
+$ ansible-playbook secure_mysql.yml
+$ ansible-playbook pipelines.yml
+$ ansible-playbook blast_local.yml
+$ ansible-playbook webserver.yml
 ```
 
 # Configuration
@@ -91,12 +94,6 @@ This playbook configures the base environment. This includes
 installing the packages required on the system, creating user, and
 cloning the github repo of the project.
 
-## mysql-secure.yml
-
-Takes care of the setup of MySQL and creates a database for the
-application and a user to access it. It also goes through some
-housekeeping for a new installation of MySQL.
-
 ## python.yml
 
 Though Ubuntu 14.04 uses python 2.7 as default (a good thing for us,
@@ -104,6 +101,12 @@ because Ansible won't run on python 3), our app is contained within a
 python 3 virtual environment. So, this playbook installs the tools we
 need. It includes creating the virtual environment, installing pip
 packages, etc.
+
+## mysql-secure.yml
+
+Takes care of the setup of MySQL and creates a database for the
+application and a user to access it. It also goes through some
+housekeeping for a new installation of MySQL.
 
 ## pipelines.yml
 
@@ -114,6 +117,6 @@ Sets up the tools required by our different pipelines.
 Uses NCBI's update-blastdb script to download and maintain a local
 copy of the [nucleotide database](ftp://ftp.ncbi.nlm.nih.gov/blast/db/README).
 
-## webapp.yml
+## webserver.yml
 
-Everything related to serving our webapp. To be defined
+Everything related to serving our webapp. Uses apache2 with wsgi.
