@@ -9,13 +9,15 @@
         <tr>
             <td><strong>Organism Name</strong></td>
             <td><strong>Refseq ID</strong></td>
-            <td><strong>Strain</strong></td>        
+            <td><strong>Strain</strong></td>
+            <td><strong>Assembly Level</strong></td>        
         </tr>
         {% for item in strain_result %}
         <tr>
             <td>{{ item.organism_name }}</td>
             <td>{{ item.refseq_id }}</td>
             <td>{{ item.strain }}</td>
+            <td>{{ item.level }}</td>
         </tr>
         {% endfor %}
     </table>
