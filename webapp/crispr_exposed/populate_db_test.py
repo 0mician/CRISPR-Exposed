@@ -51,7 +51,7 @@ def add_strain(
     if(proteins == "-"):
         proteins = -1
 
-    strain = Strain.objects.get_or_create(
+    strain = Strain.objects.create(
         refseq_id=refseq_id,
         organism_name=organism_name,
         strain=strain,
@@ -72,23 +72,23 @@ def add_strain(
         modification_date=modification_date,
         level=level,
         refseq_ftp=refseq_ftp,
-        genbank_ftp=genbank_ftp)[0]
+        genbank_ftp=genbank_ftp)
     return strain
         
 def add_crispr_array(refseq_id, array_id, start, end):
-    crispr_array = CrisprArray.objects.get_or_create(
+    crispr_array = CrisprArray.objects.create(
         refseq_id=refseq_id, array_id=array_id,
-        start=start, end=end)[0]
+        start=start, end=end)
     return crispr_array
 
 def add_crispr_entry(array, position, repeat, spacer, length_repeat, length_spacer):
-    crispr_entry = CrisprEntry.objects.get_or_create(
+    crispr_entry = CrisprEntry.objects.create(
         array=array, 
         position=position, 
         repeat=repeat, 
         spacer=spacer,
         length_repeat=length_repeat,
-        length_spacer=length_spacer)[0]
+        length_spacer=length_spacer)
 
 def populate_db():
     # keep track of progress

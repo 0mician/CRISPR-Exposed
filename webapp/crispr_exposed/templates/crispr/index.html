@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Search{% endblock %}
+
+{% block body_block %}
+
+  <h2>Search</h2>
+
+  <form method="post" action="/crispr/search_result/">
+    <div class="form-group">
+      <label for="SearchByOrganism">Organism Name:</label>
+      <input class="form-control" type="text" name="organism_name_q" id="q_02" value="{{ query }}" placeholder="e.g. Escherichia Coli (required)"/>
+    </div>
+    <div class="form-group">
+      <label for="SearchByRefSeq">RefSeq ID</label>
+      <input class="form-control" type="text" name="refseq_id_q" id="q_01" value="{{ query }}" placeholder="GCF_000622615.2"/>
+    </div>
+    <button class="btn btn-primary" type="submit">Search</button>
+    {% csrf_token %}
+  </form>
+
+{% endblock %}

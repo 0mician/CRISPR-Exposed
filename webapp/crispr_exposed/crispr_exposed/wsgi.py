@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "crispr_exposed.settings") #crispr_exposed.settings_prod
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "crispr_exposed.settings_prod") #crispr_exposed.settings_prod
 
 application = get_wsgi_application()

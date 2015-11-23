@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Strain Details{% endblock %}
+
+{% block body_block %}
+
+    {% if crispr_array %}
+      {% for ca in crispr_array %}
+        <h2>CRISPR Array {{ forloop.counter }}</h2>
+        <table class="table table-hover">
+          <thead>
+            <tr> 
+              <th class="col-xs-2">Position</th>
+              <th class="col-xs-2">Length of repeat</th>
+              <th class="col-xs-2">Length of spacer</th>
+              <th class="col-xs-2">Repeat</th>
+              <th class="col-xs-2">Spacer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in ca.crisprentry_set.all %}
+              <tr>
+                <td>{{ e.position }}</td>
+                <td>{{ e.length_repeat }}</td>
+                <td>{{ e.length_spacer }}</td>
+                <td style="font-family: monospace;">{{ e.repeat }}</td>
+                <td style="font-family: monospace;">{{ e.spacer }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endfor %}
+    {% else %}
+      <p>No putative CRISPR arrays found for this particular strain.</p>
+    {% endif %}
+
+{% endblock %}

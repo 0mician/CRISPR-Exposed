@@ -28,7 +28,7 @@ SECRET_KEY = config['DjangoSecretKey']['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', '91.121.222.125']
 
 
 # Application definition
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'crispr_exposed.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,8 +105,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+STATIC_PATH = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGGING = {
     'version' : 1,
@@ -121,7 +122,7 @@ LOGGING = {
         'file' : {
             'level' : 'DEBUG',
             'class' : 'logging.FileHandler',
-            'filename' : '/var/log/django/crispr_exposed.log', 
+            'filename' : os.path.join(BASE_DIR, 'crispr_exposed.log'), 
             'formatter' : 'standard'
         },
     },
