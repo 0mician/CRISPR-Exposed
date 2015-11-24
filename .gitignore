@@ -30,6 +30,9 @@ data/
 temp_hamed/
 data-test/
 
+# Static files temporary copied here to resolve path problem
+webapp/crispr_exposed/crispr/static/
+
 # reports
 pipelines/crt_error.txt
 config.ini
