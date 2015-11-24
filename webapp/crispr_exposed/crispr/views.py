@@ -3,6 +3,8 @@ from django.http import HttpResponse
 
 from .models import Strain, CrisprEntry, CrisprArray
 
+import os
+
 def index(request):
     return render(request, "crispr/index.html")
 
@@ -31,3 +33,43 @@ def crispr_details(request, slug):
     except Strain.DoesNotExist:
         pass
     return render(request, 'crispr/details.html', context_dict)
+
+def blast(request):
+    return render(request, "crispr/blast.html")
+    
+def blast_result(request):
+    ## File Browse
+    #if request.POST['FASTA_file']:
+        #FASTA_file = request.POST.get('FASTA_file')
+        #return render(request, "crispr/blast_result.html", {'FASTA_file' : FASTA_file})
+        #return HttpResponse(request, "File selected")
+    ## FASTA input from text field.
+    if request.POST['input_seq']:
+        FASTA = request.POST.get('input_seq')
+        
+        ## save input FASTA to a temp file.
+        fasta_file = open("crispr/blast/input.fasta" ,'w')
+        fasta_file.writelines(">input\n"+FASTA)
+        fasta_file.close()
+        
+        ## blastn command
+        os.system("blastn -query crispr/blast/input.fasta -db crispr/blast/db/spacers.fasta -out crispr/blast/blast_result.txt")
+        
+        ## loop until file is generated
+        while(True):
+            try:
+                blast_result_file = open("crispr/blast/blast_result.txt", 'r')
+                if(blast_result_file):
+                    ## reading blast result file into memory
+                    blast_result_txt = blast_result_file.read()
+                    blast_result_file.close()
+                    
+                    ## removing temp files
+                    os.system("rm crispr/blast/input.fasta crispr/blast/blast_result.txt")
+                    break
+            except File.DoesNotExist:
+                pass
+
+        return render(request, "crispr/blast_result.html", {'FASTA' : FASTA, 'Blast_result' : blast_result_txt})
+    else:
+        return HttpResponse("Please submit a FASTA sequence")
