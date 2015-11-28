@@ -26,9 +26,13 @@ emacs-config.el
 data/
 .~lock.*
 
-# Just for test
+# Dirs just for test
 temp_hamed/
 data-test/
+webapp/crispr_exposed/blastplus/
+
+# Static files temporary copied here to resolve path problem
+webapp/crispr_exposed/crispr/static/
 
 # reports
 pipelines/crt_error.txt
