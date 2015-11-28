@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import Strain, CrisprEntry, CrisprArray
 
 import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def index(request):
     return render(request, "crispr/index.html")
@@ -51,24 +52,28 @@ def blast_result(request):
         FASTA = request.POST.get('input_seq')
         
         ## save input FASTA to a temp file.
-        fasta_file = open("crispr/blast/input.fasta" ,'w')
+        fasta_file = open(os.path.join(BASE_DIR, "crispr/blast/tmp/input.fasta") ,'w')
         fasta_file.writelines(">input\n"+FASTA)
         fasta_file.close()
         
         ## blastn command
-        os.system("blastn -query crispr/blast/input.fasta -db crispr/blast/db/spacers.fasta -out crispr/blast/blast_result.txt")
-        
+        os.system("blastn -query " + 
+                  str(os.path.join(BASE_DIR, 'crispr/blast/tmp/input.fasta')) + " -db " + 
+                  str(os.path.join(BASE_DIR, 'crispr/blast/db/spacers.fasta')) + " -out " + 
+                  str(os.path.join(BASE_DIR, 'crispr/blast/tmp/blast_result.txt')))
+
         ## loop until file is generated
         while(True):
             try:
-                blast_result_file = open("crispr/blast/blast_result.txt", 'r')
+                blast_result_file = open(os.path.join(BASE_DIR, "crispr/blast/tmp/blast_result.txt"), 'r')
                 if(blast_result_file):
                     ## reading blast result file into memory
                     blast_result_txt = blast_result_file.read()
                     blast_result_file.close()
                     
                     ## removing temp files
-                    os.system("rm crispr/blast/input.fasta crispr/blast/blast_result.txt")
+                    os.system("rm " + str(os.path.join(BASE_DIR, "crispr/blast/input.fasta")) +
+                              " " + str(os.path.join(BASE_DIR, "crispr/blast/blast_result.txt")))
                     break
             except File.DoesNotExist:
                 pass
