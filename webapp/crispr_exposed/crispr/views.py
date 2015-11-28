@@ -8,6 +8,9 @@ import os
 def index(request):
     return render(request, "crispr/index.html")
 
+def about(request):
+    return render(request, "crispr/about.html")
+
 def search_result(request):
     if 'organism_name_q' in request.POST and request.POST['organism_name_q']:
         organism_name_q = request.POST['organism_name_q']
