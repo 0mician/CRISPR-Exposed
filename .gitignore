@@ -30,6 +30,7 @@ data/
 temp_hamed/
 data-test/
 webapp/crispr_exposed/blastplus/
+webapp/crispr_exposed/crispr/blast/
 
 # Static files temporary copied here to resolve path problem
 webapp/crispr_exposed/crispr/static/
