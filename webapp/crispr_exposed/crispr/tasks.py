@@ -25,8 +25,8 @@ def blastn(FASTA):
                 blast_result_file.close()
                 
                 ## removing temp files
-                os.system("rm " + str(os.path.join(BASE_DIR, "crispr/blast/input.fasta")) +
-                          " " + str(os.path.join(BASE_DIR, "crispr/blast/blast_result.txt")))
+                os.system("rm " + str(os.path.join(BASE_DIR, "crispr/blast/tmp/input.fasta")) +
+                          " " + str(os.path.join(BASE_DIR, "crispr/blast/tmp/blast_result.txt")))
                 break
         except File.DoesNotExist:
             pass
