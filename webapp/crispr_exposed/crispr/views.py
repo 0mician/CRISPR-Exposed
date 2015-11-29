@@ -3,6 +3,8 @@ from django.http import HttpResponse
 
 from .models import Strain, CrisprEntry, CrisprArray
 
+from crispr.tasks import blastn
+
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -51,33 +53,22 @@ def blast_result(request):
     if request.POST['input_seq']:
         FASTA = request.POST.get('input_seq')
         
-        ## save input FASTA to a temp file.
-        fasta_file = open(os.path.join(BASE_DIR, "crispr/blast/tmp/input.fasta") ,'w')
-        fasta_file.writelines(">input\n"+FASTA)
-        fasta_file.close()
+        ## from tasks.py
+        blast_result = blastn.delay(FASTA)
         
-        ## blastn command
-        os.system("blastn -query " + 
-                  str(os.path.join(BASE_DIR, 'crispr/blast/tmp/input.fasta')) + " -db " + 
-                  str(os.path.join(BASE_DIR, 'crispr/blast/db/spacers.fasta')) + " -out " + 
-                  str(os.path.join(BASE_DIR, 'crispr/blast/tmp/blast_result.txt')))
-
-        ## loop until file is generated
-        while(True):
-            try:
-                blast_result_file = open(os.path.join(BASE_DIR, "crispr/blast/tmp/blast_result.txt"), 'r')
-                if(blast_result_file):
-                    ## reading blast result file into memory
-                    blast_result_txt = blast_result_file.read()
-                    blast_result_file.close()
-                    
-                    ## removing temp files
-                    os.system("rm " + str(os.path.join(BASE_DIR, "crispr/blast/input.fasta")) +
-                              " " + str(os.path.join(BASE_DIR, "crispr/blast/blast_result.txt")))
-                    break
-            except File.DoesNotExist:
-                pass
-
-        return render(request, "crispr/blast_result.html", {'FASTA' : FASTA, 'Blast_result' : blast_result_txt})
+        ## check if the result is ready
+        while not(blast_result.ready()):pass    ## and not(blast_result.successful()) ...
+        if blast_result.ready():
+            if blast_result.successful():
+                return render(request, "crispr/blast_result.html", {'FASTA' : FASTA, 'Blast_result' : blast_result.result})
+            else:
+                if isinstance(blast_result.result, Exception):
+                    print("task failed due to an exception")
+                    raise result.result
+                else:
+                    print("task was failed without raising an exception")
+        else:
+            print ("task has not yet run")
+        
     else:
         return HttpResponse("Please submit a FASTA sequence")
