@@ -15,7 +15,7 @@ import os
 
 import djcelery
 djcelery.setup_loader()
-BROKER_URL = 'django://'
+BROKER_URL = 'amqp://guest:guest@localhost:5672//' ## BROKER_URL = 'django://'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -42,8 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispr',
-    'djcelery',
-    'kombu.transport.django'
+    'djcelery', ## 'kombu.transport.django'
 )
 
 MIDDLEWARE_CLASSES = (
