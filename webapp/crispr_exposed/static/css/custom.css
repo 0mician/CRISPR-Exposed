@@ -1,5 +1,5 @@
 /* Sticky footer styles
--------------------------------------------------- */
+-----------------------*/
 html {
     position: relative;
     min-height: 100%;
@@ -20,4 +20,15 @@ body {
 
 .container .text-muted {
     margin: 20px 0;
+}
+
+/* Strain details page 
+-----------------------*/
+
+.defmargin{
+    margin: 20px;
+}
+
+a.accordion-toggle{
+    color: black;
 }

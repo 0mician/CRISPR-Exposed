@@ -6,34 +6,139 @@
 
 {% block body_block %}
 
-    {% if crispr_array %}
-      {% for ca in crispr_array %}
-        <h2>CRISPR Array {{ forloop.counter }}</h2>
-        <table class="table table-hover">
-          <thead>
-            <tr> 
-              <th class="col-xs-2">Position</th>
-              <th class="col-xs-2">Length of repeat</th>
-              <th class="col-xs-2">Length of spacer</th>
-              <th class="col-xs-2">Repeat</th>
-              <th class="col-xs-2">Spacer</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for e in ca.crisprentry_set.all %}
-              <tr>
-                <td>{{ e.position }}</td>
-                <td>{{ e.length_repeat }}</td>
-                <td>{{ e.length_spacer }}</td>
-                <td style="font-family: monospace;">{{ e.repeat }}</td>
-                <td style="font-family: monospace;">{{ e.spacer }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% endfor %}
-    {% else %}
-      <p>No putative CRISPR arrays found for this particular strain.</p>
-    {% endif %}
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <h2>{{ strain.organism_name|truncatewords:2}}</h2>
+      <div class="defmargin">
+        <dl class="dl-horizontal">
+          <dt>Full name</dt>
+          <dd>{{ strain.organism_name }}</dd>
 
+          <dt>Group</dt>
+          <dd>{{ strain.group }}</dd>
+
+          <dt>Subgroup</dt>
+          <dd>{{ strain.sub_group }}</dd>
+
+          <dt>Clade ID</dt> 
+          {% if strain.clade_id == -1 %}
+            <dd>N/A</dd>
+          {% else %}
+            <dd>{{ strain.clade_id }}</dd>
+          {% endif %}
+
+          <dt>Strain</dt>
+          <dd>{{ strain.strain}}</dd>
+
+          <dt>Scaffolds</dt>
+          {% if strain.scaffolds == -1 %}
+            <dd>N/A</dd>
+          {% else %}
+            <dd>{{ strain.scaffolds }}</dd>
+          {% endif %}
+
+          <dt>Genome size</dt> 
+          <dd>{{ strain.size }} Mb</dd>
+
+          <dt>GC content</dt> 
+          <dd>{{ strain.gc_content }} %</dd>
+
+          <dt>Number of genes</dt>
+          {% if strain.genes == -1 %}
+            <dd>N/A</dd>
+          {% else %}
+            <dd>{{ strain.genes}}</dd>
+          {% endif %}
+          <dt>Number of proteins</dt>
+          {% if strain.proteins == -1 %}
+            <dd>N/A</dd>
+          {% else %}
+            <dd>{{ strain.proteins }}</dd>
+          {% endif %}
+        </dl>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h2>Links</h2>
+      <div class="defmargin">
+        <dl class="dl-horizontal">
+          <dt>BioSample</dt>
+          {% if strain.bio_sample %}
+            <dd><a href="http://www.ncbi.nlm.nih.gov/biosample/{{ strain.bio_sample }}">{{ strain.bio_sample }}</a></dd>
+          {% else %}
+            <dd>N/A</dd>
+          {% endif %}
+
+          <dt>BioProject</dt>
+          {% if strain.bio_project %}
+            <dd><a href="http://www.ncbi.nlm.nih.gov/bioproject/{{ strain.bio_project }}">{{ strain.bio_project }}</a></dd>
+          {% else %}
+            <dd>N/A</dd>
+          {% endif %}
+
+          <dt>Assembly</dt>
+          {% if strain.assembly %}
+            <dd><a href="http://www.ncbi.nlm.nih.gov/assembly/{{ strain.assembly }}">{{ strain.assembly }}</a></dd>
+          {% else %}
+            <dd>N/A</dd>
+          {% endif %}
+
+          <dt>RefSeq FTP</dt>
+          {% if strain.refseq_ftp %}
+            <dd><a href="{{ strain.refseq_ftp }}">Project folder</a></dd>
+          {% else %}
+            <dd>N/A</dd>
+          {% endif %}
+
+          <dt>Genbank FTP</dt>
+          {% if strain.genbank_ftp %}
+            <dd><a href="{{ strain.genbank_ftp }}">Project folder</a></dd>
+          {% else %}
+            <dd>N/A</dd>
+          {% endif %}
+
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+  <h2>CRISPR Arrays detected</h2>
+  {% if crispr_array %}
+    {% for ca in crispr_array %}
+      <div class="panel panel-default accordion">
+        <div class="panel-heading">
+          <h3><a class="accordion-toggle" data-toggle="collapse" data-parent=".accordion" href="#collapse{{ forloop.counter }}">Array {{ forloop.counter }}</a></h3>
+        </div>
+        <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+          <div class="panel-body">
+            <table class="table table-hover">
+              <thead>
+                <tr> 
+                  <th class="col-xs-2">Position</th>
+                  <th class="col-xs-2">Length of repeat</th>
+                  <th class="col-xs-2">Length of spacer</th>
+                  <th class="col-xs-2">Repeat</th>
+                  <th class="col-xs-2">Spacer</th>
+                </tr>
+              </thead>
+              <tbody data-toggle="collapse" data-target="#accordion" class="clickable">
+                {% for e in ca.crisprentry_set.all %}
+                  <tr>
+                    <td>{{ e.position }}</td>
+                    <td>{{ e.length_repeat }}</td>
+                    <td>{{ e.length_spacer }}</td>
+                    <td style="font-family: monospace;">{{ e.repeat }}</td>
+                    <td style="font-family: monospace;">{{ e.spacer }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No putative CRISPR arrays found for this particular strain.</p>
+  {% endif %}
+  </div>
 {% endblock %}
