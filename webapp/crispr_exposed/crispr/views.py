@@ -57,7 +57,7 @@ def blast_result(request):
         blast_result = blastn.delay(FASTA)
         
         ## check if the result is ready
-        while not(blast_result.ready()):pass    ## and not(blast_result.successful()) ...
+        while not(blast_result.ready()):pass    ## and not(blast_result.successful()) ... OR sleep(time) OR retry i times
         if blast_result.ready():
             if blast_result.successful():
                 return render(request, "crispr/blast_result.html", {'FASTA' : FASTA, 'Blast_result' : blast_result.result})
