@@ -14,11 +14,15 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 import djcelery
+
+# Celery Configurations
 djcelery.setup_loader()
 BROKER_URL = 'amqp://guest:guest@localhost:5672//' ## BROKER_URL = 'django://'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Brussels'
+CELERY_ENABLE_UTC = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
