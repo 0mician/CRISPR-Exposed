@@ -17,7 +17,7 @@ import djcelery
 
 djcelery.setup_loader()
 # Celery configs
-BROKER_URL = 'amqp://guest:guest@localhost:5672//' ## BROKER_URL = 'django://' ## for dev
+BROKER_URL = 'amqp://crispr:crispr2015@localhost:5672/crispr_host' ## 'amqp://guest:guest@localhost:5672//' ## BROKER_URL = 'django://' ## for dev
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
