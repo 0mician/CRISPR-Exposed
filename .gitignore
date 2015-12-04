@@ -31,7 +31,6 @@ temp_hamed/
 data-test/
 webapp/crispr_exposed/blastplus/
 webapp/crispr_exposed/crispr/blast/
-/home/hamed/projects/CRISPR-Exposed/configuration/playbooks/0_rabbitmq_config.txt
 
 # Static files temporary copied here to resolve path problem
 webapp/crispr_exposed/crispr/static/
