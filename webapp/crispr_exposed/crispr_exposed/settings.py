@@ -13,17 +13,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-import djcelery
-
-djcelery.setup_loader()
-# Celery configs
-BROKER_URL = 'amqp://crispr:crispr2015@localhost:5672/crispr_host' ## 'amqp://guest:guest@localhost:5672//' ## BROKER_URL = 'django://' ## for dev
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Europe/Brussels'
-CELERY_ENABLE_UTC = True
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -49,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispr',
-    'djcelery', ## 'kombu.transport.django'
 )
 
 MIDDLEWARE_CLASSES = (
