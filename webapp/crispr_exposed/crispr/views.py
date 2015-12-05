@@ -87,11 +87,14 @@ def blast_result(request):
 class StrainViewSet(viewsets.ModelViewSet):
     queryset = Strain.objects.all()
     serializer_class = StrainSerializer
+    http_method_names = ['get', 'head']
 
 class CrisprArrayViewSet(viewsets.ModelViewSet):
     queryset = CrisprArray.objects.all()
     serializer_class = CrisprArraySerializer
+    http_method_names = ['get', 'head']
 
 class CrisprEntryViewSet(viewsets.ModelViewSet):
     queryset = CrisprEntry.objects.all()
     serializer_class = CrisprEntrySerializer
+    http_method_names = ['get', 'head']
