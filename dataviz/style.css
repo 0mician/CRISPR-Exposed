@@ -2,7 +2,7 @@ body {
   font-size: 14px;
   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
   margin: 24px;
-  background: #fcfcfc;
+  background: white;
   line-height: 1.45em;
 }
 a {
@@ -46,4 +46,10 @@ h3 {
 }
 input {
   font-size: 16px;
+}
+
+.dc-chart g.row text {
+    fill: grey;
+    font-size: 12px;
+    cursor: pointer;
 }

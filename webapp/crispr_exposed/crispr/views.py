@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Strain, CrisprEntry, CrisprArray
+from rest_framework import viewsets
+from .serializers import StrainSerializer, CrisprArraySerializer, CrisprEntrySerializer
 
+from .models import Strain, CrisprEntry, CrisprArray
 from crispr.tasks import blastn
 
 import os
@@ -76,3 +78,17 @@ def blast_result(request):
         
     else:
         return HttpResponse("Please submit a FASTA sequence")
+
+# Rest ViewSets (django rest framework)
+
+class StrainViewSet(viewsets.ModelViewSet):
+    queryset = Strain.objects.all()
+    serializer_class = StrainSerializer
+
+class CrisprArrayViewSet(viewsets.ModelViewSet):
+    queryset = CrisprArray.objects.all()
+    serializer_class = CrisprArraySerializer
+
+class CrisprEntryViewSet(viewsets.ModelViewSet):
+    queryset = CrisprEntry.objects.all()
+    serializer_class = CrisprEntrySerializer
