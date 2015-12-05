@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Distribution of repeats and spacers</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="dc.css"/>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="d3.parcoords.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-3">
+                    <h5>Number of genome sequenced per group</h5>
+                    <div id="groupRowChart"></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <h5>Distribution of CRISPR repeats</h5>
+                        <div id="repeatHistogram"></div>
+                    </div>
+                    <div class="row">
+                        <h5>Distribution of CRISPR spacers</h5>
+                        <div id="spacerHistogram"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5>Parallel Coordinates</h5>
+                    <div id="crisprParcoords" class="parcoords" style="width:600px;height:550px; margin:0 auto;"> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="d3.js"></script>
+    <script type="text/javascript" src="crossfilter.js"></script>
+    <script type="text/javascript" src="dc.js"></script>
+    <script src="d3.min.js"></script>
+    <script src="d3.svg.multibrush.js"></script>
+    <script src="jquery-1.7.min.js"></script>
+    <script src="divgrid.js"></script>
+    <script src="d3.parcoords.js"></script>
+    <script type="text/javascript">
+
+    /*************************************
+    * CHARTS USING DC.JS AND CROSSFILTER *
+    **************************************/
+
+    /* create chart objects */
+    var groupRowChart = dc.rowChart("#groupRowChart"),
+    repeatHistogram = dc.barChart("#repeatHistogram"),
+    spacerHistogram = dc.barChart("#spacerHistogram");
+
+
+    /* load data */
+    d3.csv("label_reducedslrl.csv", function(error, label_reducedslrl) {
+
+
+        /* set crossfilter */
+        var data = crossfilter(label_reducedslrl),
+
+
+        /* dimension */
+        groupDimension          = data.dimension(function(d){return d.Group;}),
+        repeatLengthDimension   = data.dimension(function(d){return +d.Repeat_length;}),
+        spacerLengthDimension   = data.dimension(function(d){return +d.Spacer_length;});
+
+
+        /* group for each dimension */
+        groupSum            = groupDimension.group().reduceSum(function(d){return d.Count;}),
+        repeatLengthSum     = repeatLengthDimension.group().reduceSum(function(d){return d.Count;}),
+        spacerLengthSum     = spacerLengthDimension.group().reduceSum(function(d){return d.Count;});
+
+     
+        /* define charts attributes */
+
+        groupRowChart
+        .width(200)
+        .height(600)
+        .margins({left: 5, top: 10, right: 5, bottom: 30})
+        .dimension(groupDimension)
+        .renderTitle(true)
+        .renderLabel(true)
+        .label(function (d){return d.key})
+        .elasticX(true)
+        .group(groupSum)
+        .xAxis().ticks(4)
+        //.ordinalColors(["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"])
+
+        groupRowChart.renderlet(function(chart){
+            chart.selectAll("g.row rect").attr("fill", function(d){
+                switch(d.key){
+                    case "Actinobacteria":
+                        return "#bebada";
+                    case "Aquificae":
+                        return "#ffed6f";
+                    case "Bacteroidetes/Chlorobi  ":
+                        return "#80b1d3";
+                    case "Caldiserica":
+                        return "#fb8072";
+                    case "Chlamydiae/Verrucomicrobia  ":
+                        return "#fdb462";
+                    case "Chloroflexi":
+                        return "#8dd3c7";
+                    case "Chrysiogenetes":
+                        return "#ccebc5"; 
+                    case "Crenarchaeota":
+                        return "#fdb462";
+                    case "Cyanobacteria":
+                        return "#ffffb3";
+                    case "Deferribacteres":
+                        return "#bebada";
+                    case "Deinococcus-Thermus":
+                        return "#d9d9d9";
+                    case "Dictyoglomi":
+                        return "#fccde5";
+                    case "Elusimicrobia":
+                        return "#b3de69";
+                    case "Euryarchaeota":
+                        return "#ffffb3";
+                    case "Fibrobacteres/Acidobacteria  ":
+                        return "#fb8072";
+                    case "Firmicutes":
+                        return "#fb8072";
+                    case "Fusobacteria":
+                        return "#b3de69";
+                    case "Korarchaeota":
+                        return "#80b1d3";
+                    case "Nitrospirae":
+                        return "#d9d9d9";
+                    case "Planctomycetes":
+                        return "#d9d9d9";
+                    case "Proteobacteria":
+                        return "#8dd3c7";
+                    case "Spirochaetes":
+                        return "#fccde5";
+                    case "Synergistetes":
+                        return "#ffed6f";
+                    case "Tenericutes":
+                        return "#bc80bd";
+                    case "Thaumarchaeota":
+                        return "#80b1d3";
+                    case "Thermodesulfobacteria":
+                        return "#fdb462";
+                    case "Thermotogae":
+                        return "#ccebc5";
+                    case "unclassified Archaea":
+                        return "#d9d9d9";
+                    case "unclassified Bacteria":
+                        return "#fccde5";
+                }
+            });
+        })
+
+            repeatHistogram
+            .width(250)
+            .height(250)
+            .margins({left: 50, top: 20, right: 20, bottom: 50})
+            .dimension(repeatLengthDimension)
+            .x(d3.scale.linear().domain([15,45]))
+            .yAxisLabel("Count")
+            .xAxisLabel("Length of repeat (bp)")
+            .elasticY(true)
+            .brushOn(true)
+            .group(repeatLengthSum)
+
+            spacerHistogram
+            .width(250)
+            .height(250)
+            .margins({left: 50, top: 20, right: 20, bottom: 50})
+            .dimension(spacerLengthDimension)
+            .x(d3.scale.log())
+            .yAxisLabel("Count")
+            .xAxisLabel("Length of spacer (bp)")
+            .elasticY(true)
+            .elasticX(true)
+            .brushOn(true)
+            .group(spacerLengthSum)
+            .renderlet(function (chart) {
+            // rotate x-axis labels
+            chart.selectAll('g.x text')
+            .attr('transform', 'translate(-10,20) rotate(270)');})
+
+            dc.renderAll();
+
+        });
+
+/***************************************
+* PARALLEL COORDINATES USING PARCOORDS *
+****************************************/
+
+d3.csv("label_report_completeAssembly_count_above_0.csv", function(data){
+  var colorgen = d3.scale.ordinal()
+  .range(["#8dd3c7","#ffffb3","#bebada","#fb8072",
+    "#80b1d3","#fdb462","#b3de69","#fccde5",
+    "#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]); 
+  
+
+  var color = function(d) { return colorgen(d.Group); };
+
+  var parcoords = d3.parcoords()("#crisprParcoords")
+  .data(data)
+  .hideAxis(["RefseqID","AssemblyLevel"])
+  .color(color)
+  .alpha(0.30)
+  .composite("source-over")
+  .margin({ top: 20, left: 100, bottom: 10, right: 10 })
+  .mode("queue")
+  .render()
+  .brushMode("1D-axes");  // enable brushing
+
+
+  parcoords.svg.selectAll("text")
+  .style("font", "11px helvetica");
+
+});
+
+
+</script>
+
+</body>
+</html>
