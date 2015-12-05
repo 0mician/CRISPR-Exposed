@@ -16,6 +16,9 @@ def index(request):
 def about(request):
     return render(request, "crispr/about.html")
 
+def visualization(request):
+    return render(request, "crispr/dataviz.html")
+
 def search_result(request):
     if 'organism_name_q' in request.POST and request.POST['organism_name_q']:
         organism_name_q = request.POST['organism_name_q']

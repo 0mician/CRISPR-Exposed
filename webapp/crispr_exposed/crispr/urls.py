@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^search_result/$', views.search_result, name='search_result'),
     url(r'^details/(?P<slug>.*?)/$', views.crispr_details, name='crispr_details'),
     url(r'^blast/$', views.blast, name='blast'),
+    url(r'^dataviz/$', views.visualization, name='dataviz'),
     url(r'^blast/result/$', views.blast_result, name='blast_result'),
 ]
