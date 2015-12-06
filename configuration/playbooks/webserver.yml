@@ -3,6 +3,16 @@
   hosts: crispr-exposed
   user: root
   
+  vars_files: 
+    - vars.yml
+
+  vars_prompt:
+
+    - name: password
+      prompt: "Choose password for rabbitmq user"
+      private: yes
+      confirm: yes
+
   tasks:
     - name: Webserver | update apt cache
       apt: update_cache=yes
@@ -12,6 +22,7 @@
       with_items: 
         - apache2
         - libapache2-mod-wsgi-py3
+        - rabbitmq-server
 
     - name: Webserver | vhost file
       template: >
@@ -21,8 +32,35 @@
 
     - name: Webserver | log file location
       file: >
-        path="/var/log/django" 
-        state=directory 
+        path="{{ git_cloning_dir }}/webapp/crispr_exposed/crispr_exposed.log" 
+        state=file 
+        owner=crispr
+        group=crispr
+        mode=0775
+
+    - name: Webserver | rabbitmq config
+      rabbitmq_user: >
+        user=crispr 
+        password={{ password }} 
+        vhost=crispr_host 
+        tags=crispr_exposed
+        configure_priv=.*
+        read_priv=.*
+        write_priv=.*
+        state=present
+
+    - name: Webserver | folders needed for rabbitmq tasks (Blast)
+      file: >
+        path="{{ git_cloning_dir }}/webapp/crispr_exposed/blast/tmp"
+        state=folder
+        owner=www-data
+        group=www-data
+        mode=0755
+
+    - name: Webserver | folders needed for rabbitmq tasks (CRT detection)
+      file: >
+        path="{{ git_cloning_dir }}/webapp/crispr_exposed/crt/tmp"
+        state=folder
         owner=www-data
         group=www-data
         mode=0755
