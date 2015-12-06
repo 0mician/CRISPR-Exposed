@@ -11,7 +11,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def index(request):
-    return render(request, "crispr/index.html")
+    ## querying the db for all organism names
+    strain_list = Strain.objects.values('organism_name').order_by('organism_name')
+    return render(request, "crispr/index.html", {'strain_list' : strain_list})
 
 def about(request):
     return render(request, "crispr/about.html")
