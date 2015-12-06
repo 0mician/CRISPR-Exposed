@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Strain, CrisprEntry, CrisprArray
+from rest_framework import viewsets
+from .serializers import StrainSerializer, CrisprArraySerializer, CrisprEntrySerializer
 
-from crispr.tasks import blastn,crt
+from .models import Strain, CrisprEntry, CrisprArray
+from crispr.tasks import blastn, crt
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,6 +15,9 @@ def index(request):
 
 def about(request):
     return render(request, "crispr/about.html")
+
+def visualization(request):
+    return render(request, "crispr/dataviz.html")
 
 def search_result(request):
     if 'organism_name_q' in request.POST and request.POST['organism_name_q']:
@@ -75,8 +80,7 @@ def blast_result(request):
             print ("task has not yet run")
         
     else:
-        return HttpResponse("Please submit a FASTA sequence")
-        
+        return HttpResponse("Please submit a FASTA sequence")        
 
 def crispr_finder(request):
     return render(request, "crispr/crt.html")
@@ -106,3 +110,20 @@ def crt_result(request):
         
     else:
         return HttpResponse("Please submit a FASTA sequence")
+
+# Rest ViewSets (django rest framework)
+
+class StrainViewSet(viewsets.ModelViewSet):
+    queryset = Strain.objects.all()
+    serializer_class = StrainSerializer
+    http_method_names = ['get', 'head']
+
+class CrisprArrayViewSet(viewsets.ModelViewSet):
+    queryset = CrisprArray.objects.all()
+    serializer_class = CrisprArraySerializer
+    http_method_names = ['get', 'head']
+
+class CrisprEntryViewSet(viewsets.ModelViewSet):
+    queryset = CrisprEntry.objects.all()
+    serializer_class = CrisprEntrySerializer
+    http_method_names = ['get', 'head']

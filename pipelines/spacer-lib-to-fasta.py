@@ -12,7 +12,7 @@ db = MySQLdb.connect(db=config['mysql']['db'],
                      passwd=config['mysql']['passwd'])
 
 c = db.cursor()
-c.execute("""SELECT ce.id,ce.spacer,ca.id,cs.refseq_id,cs.organism_name FROM crispr_crisprentry ce JOIN crispr_crisprarray ca ON ce.array_id = ca.refseq_id_id JOIN crispr_strain cs ON ca.refseq_id_id = cs.id LIMIT 10""")
+c.execute("""SELECT ce.id,ce.spacer,ca.id,cs.refseq_id,cs.organism_name FROM crispr_crisprentry ce JOIN crispr_crisprarray ca ON ce.array_id = ca.id JOIN crispr_strain cs ON ca.refseq_id_id = cs.id""")
 
 entries = c.fetchall()
 

@@ -1,0 +1,5 @@
+.dc-chart g.row text {
+    fill: grey;
+    font-size: 12px;
+    cursor: pointer;
+}

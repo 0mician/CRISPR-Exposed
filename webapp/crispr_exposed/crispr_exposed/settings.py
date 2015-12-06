@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispr',
+    'rest_framework',
+    'django_filters',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,6 +84,12 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'PAGE_SIZE': 10
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -102,7 +110,12 @@ USE_TZ = True
 
 STATIC_PATH = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = (
+    STATIC_PATH,
+)
+
+STATIC_ROOT = ""
 
 LOGGING = {
     'version' : 1,

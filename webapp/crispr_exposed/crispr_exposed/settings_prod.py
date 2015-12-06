@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispr',
+    'rest_framework',
+    'django_filters',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,6 +89,14 @@ DATABASES = {
 	'PASSWORD': config['DjangoMySQL']['PASSWORD'],
 	'HOST': 'localhost',
     }
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'PAGE_SIZE': 10
 }
 
 # Internationalization
