@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 from .models import Strain, CrisprEntry, CrisprArray
 
-from crispr.tasks import blastn
+from crispr.tasks import blastn,crt
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -67,6 +67,36 @@ def blast_result(request):
                 return render(request, "crispr/blast_result.html", {'FASTA' : FASTA, 'Blast_result' : blast_result.result})
             else:
                 if isinstance(blast_result.result, Exception):
+                    print("task failed due to an exception")
+                    raise result.result
+                else:
+                    print("task was failed without raising an exception")
+        else:
+            print ("task has not yet run")
+        
+    else:
+        return HttpResponse("Please submit a FASTA sequence")
+        
+
+def crispr_finder(request):
+    return render(request, "crispr/crt.html")
+
+def crt_result(request):
+    if request.POST['input_seq']:
+        FASTA = request.POST.get('input_seq')
+        
+        ## from tasks.py
+        crt_result = crt.delay(FASTA)
+        
+        try:
+            crt_result.get(timeout = 20, interval = 1)    ## set timeout = 300 seconds and wait time = 1 sec
+        except:
+            return HttpResponse("Request timeout! please try again.")
+        if crt_result.ready():
+            if crt_result.successful():
+                return render(request, "crispr/crt_result.html", {'FASTA' : FASTA, 'crt_result' : crt_result.result})
+            else:
+                if isinstance(crt_result.result, Exception):
                     print("task failed due to an exception")
                     raise result.result
                 else:
