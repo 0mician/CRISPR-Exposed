@@ -11,7 +11,7 @@ def blastn(FASTA):
     blast_temp = tempfile.NamedTemporaryFile()
     
     fasta_file = open(os.path.join(BASE_DIR, "crispr/blast", fasta_temp.name) ,'w')
-    fasta_file.writelines(">input\n"+FASTA)
+    fasta_file.writelines(FASTA)
     fasta_file.close()
     
     ## blastn command
