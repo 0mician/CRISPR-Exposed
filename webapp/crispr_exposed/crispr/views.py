@@ -11,7 +11,16 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def index(request):
-    return render(request, "crispr/index.html")
+    ## querying the db for all organism names
+    strain_list = Strain.objects.values('organism_name').order_by('organism_name')
+    
+    ## generate a uniq list of organism names
+    uniq_name_list = []
+    for item in strain_list:
+        uniq_name_list.append(item['organism_name'].split()[0] + ' ' + item['organism_name'].split()[1])
+    uniq_name_list = sorted(set(uniq_name_list))
+    
+    return render(request, "crispr/index.html", {'uniq_name_list' : uniq_name_list})
 
 def about(request):
     return render(request, "crispr/about.html")
@@ -20,16 +29,30 @@ def visualization(request):
     return render(request, "crispr/dataviz.html")
 
 def search_result(request):
-    if 'organism_name_q' in request.POST and request.POST['organism_name_q']:
-        organism_name_q = request.POST['organism_name_q']
-        query = organism_name_q
-        if 'refseq_id_q' in request.POST and request.POST['refseq_id_q']:
-            refseq_id_q = request.POST['refseq_id_q']        
-            strain_result = Strain.objects.filter(organism_name__icontains=organism_name_q, refseq_id__icontains=refseq_id_q)
-            query += refseq_id_q
-        else:
-            strain_result = Strain.objects.filter(organism_name__icontains=organism_name_q)
+    ## search by refseq
+    if 'refseq_id' in request.POST and request.POST['refseq_id']:
+        refseq_id = request.POST['refseq_id']
+        strain_result = Strain.objects.filter(refseq_id__icontains=refseq_id)
+        query = refseq_id
         return render(request, 'crispr/search_result.html', {'strain_result' : strain_result, 'query' : query})
+
+    ## search by selected organism and filter
+    elif 'organism_name' in request.POST and request.POST['organism_name']:     ## remove?
+        organism_name = request.POST['organism_name']
+        query = organism_name
+
+        ## applying the filter if entered
+        if 'org_name_filter' in request.POST and request.POST['org_name_filter']:
+            org_name_filter = request.POST['org_name_filter']
+            strain_result = Strain.objects.filter(organism_name__icontains=organism_name, organism_name__contains=org_name_filter)
+            query = org_name_filter
+        
+        else:
+            strain_result = Strain.objects.filter(organism_name__icontains=organism_name)
+            
+        return render(request, 'crispr/search_result.html', {'strain_result' : strain_result, 'query' : query})
+    
+    ## no entry --remove?
     else:
         return HttpResponse("Please  submit a search Term")
 
