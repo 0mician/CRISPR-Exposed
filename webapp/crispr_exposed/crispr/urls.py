@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^blast/$', views.blast, name='blast'),
     url(r'^dataviz/$', views.visualization, name='dataviz'),
     url(r'^blast/result/$', views.blast_result, name='blast_result'),
+    url(r'^crt/$', views.crispr_finder, name='crispr_finder'),
+    url(r'^crt/result/$', views.crt_result, name='crt_result'),
 ]

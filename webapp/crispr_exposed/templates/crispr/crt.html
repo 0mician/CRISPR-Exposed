@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Search{% endblock %}
+
+{% block body_block %}
+
+  <h2>CRISPR FINDER --using CRT</h2>
+
+  <form method="post" action="/crispr/crt/result/">
+    <div class="form-group">
+      <label for="FASTASequence">Enter FASTA Sequence:</label>
+      <textarea class="form-control" type="text" name="input_seq" id="q_1" value="{{ query }}" placeholder="FASTA Sequence"></textarea>
+    </div>
+    <h4>Or</h4>
+    <div class="form-group">
+        <label class="file">
+            <input type="file" id="FASTA_file">
+            <span class="file-custom"></span>
+        </label>
+    </div>
+    <button class="btn btn-primary" type="submit">Find</button>
+    {% csrf_token %}
+  </form>
+
+{% endblock %}
