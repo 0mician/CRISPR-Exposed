@@ -73,37 +73,37 @@ def blast(request):
     
 def blast_result(request):
     ## File Browse
-    #if request.POST['FASTA_file']:
-        #FASTA_file = request.POST.get('FASTA_file')
-        #return render(request, "crispr/blast_result.html", {'FASTA_file' : FASTA_file})
-        #return HttpResponse(request, "File selected")
+    if request.FILES:
+        FASTA_file = request.FILES["file"]
+        FASTA = FASTA_file.read()
+        FASTA = FASTA.decode(encoding='UTF-8')
+        
     ## FASTA input from text field.
-    if request.POST['input_seq']:
+    elif request.POST['input_seq']:
         FASTA = request.POST.get('input_seq')
         
-        ## from tasks.py
-        blast_result = blastn.delay(FASTA)
-        
-        ## check if the result is ready
-        #while not(blast_result.ready()):pass    ## and not(blast_result.successful()) ... OR sleep(time) OR retry i times
-        try:
-            blast_result.get(timeout = 2, interval = 1)    ## set timeout = 300 seconds and wait time = 1 sec
-        except:
-            return HttpResponse("Request timeout! please try again.")
-        if blast_result.ready():
-            if blast_result.successful():
-                return render(request, "crispr/blast_result.html", {'FASTA' : FASTA, 'Blast_result' : blast_result.result})
-            else:
-                if isinstance(blast_result.result, Exception):
-                    print("task failed due to an exception")
-                    raise result.result
-                else:
-                    print("task was failed without raising an exception")
-        else:
-            print ("task has not yet run")
-        
     else:
-        return HttpResponse("Please submit a FASTA sequence")        
+        return HttpResponse("Please submit a FASTA sequence")
+    ## from tasks.py
+    blast_result = blastn.delay(FASTA)
+        
+    ## check if the result is ready
+    #while not(blast_result.ready()):pass    ## and not(blast_result.successful()) ... OR sleep(time) OR retry i times
+    try:
+        blast_result.get(timeout = 2, interval = 1)    ## set timeout = 300 seconds and wait time = 1 sec
+    except:
+        return HttpResponse("Request timeout! please try again.")
+    if blast_result.ready():
+        if blast_result.successful():
+            return render(request, "crispr/blast_result.html", {'FASTA' : FASTA, 'Blast_result' : blast_result.result})
+        else:
+            if isinstance(blast_result.result, Exception):
+                print("task failed due to an exception")
+                raise result.result
+            else:
+                print("task was failed without raising an exception")
+    else:
+        print ("task has not yet run")
 
 def crispr_finder(request):
     return render(request, "crispr/crt.html")
