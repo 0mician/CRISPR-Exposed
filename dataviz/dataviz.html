@@ -13,21 +13,21 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-3">
-                    <h5>Number of genome sequenced per group</h5>
+                    <h5>Number of genome per group</h5>
                     <div id="groupRowChart"></div>
                 </div>
                 <div class="col-md-3">
                     <div class="row">
-                        <h5>Distribution of CRISPR repeats</h5>
+                        <h5>Distribution of CRISPR repeats' length</h5>
                         <div id="repeatHistogram"></div>
                     </div>
                     <div class="row">
-                        <h5>Distribution of CRISPR spacers</h5>
+                        <h5>Distribution of CRISPR spacers' length</h5>
                         <div id="spacerHistogram"></div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h5>Parallel Coordinates</h5>
+                    <h5 id="parcoordsTitle">Parallel coordinates</h5>
                     <div id="crisprParcoords" class="parcoords" style="width:600px;height:550px; margin:0 auto;"> </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
 
 
         /* group for each dimension */
-        groupSum            = groupDimension.group().reduceSum(function(d){return d.Count;}),
+        groupSum            = groupDimension.group().reduceSum(function(d){return d.log_genome_count;}),
         repeatLengthSum     = repeatLengthDimension.group().reduceSum(function(d){return d.Count;}),
         spacerLengthSum     = spacerLengthDimension.group().reduceSum(function(d){return d.Count;});
 
@@ -77,15 +77,15 @@
         groupRowChart
         .width(200)
         .height(600)
-        .margins({left: 5, top: 10, right: 5, bottom: 30})
+        .margins({left: 5, top: 10, right: 5, bottom: 40})
         .dimension(groupDimension)
         .renderTitle(true)
         .renderLabel(true)
         .label(function (d){return d.key})
         .elasticX(true)
         .group(groupSum)
-        .xAxis().ticks(4)
-        //.ordinalColors(["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"])
+        .xAxis().ticks(2)
+
 
         groupRowChart.renderlet(function(chart){
             chart.selectAll("g.row rect").attr("fill", function(d){
@@ -124,6 +124,8 @@
                         return "#fb8072";
                     case "Fusobacteria":
                         return "#b3de69";
+                    case "Gemmatimonadetes":
+                        return "#8dd3c7";
                     case "Korarchaeota":
                         return "#80b1d3";
                     case "Nitrospirae":
@@ -160,6 +162,7 @@
             .x(d3.scale.linear().domain([15,45]))
             .yAxisLabel("Count")
             .xAxisLabel("Length of repeat (bp)")
+            .elasticX(true)
             .elasticY(true)
             .brushOn(true)
             .group(repeatLengthSum)
@@ -183,6 +186,21 @@
 
             dc.renderAll();
 
+
+            /* Additional function to add x-axis label to row chart */
+            function AddXAxis(chartToUpdate, displayText)
+            {
+                chartToUpdate.svg()
+                    .append("text")
+                    .attr("class", "x-axis-label")
+                    .attr("text-anchor", "middle")
+                    .attr("x", chartToUpdate.width()/2)
+                    .attr("y", chartToUpdate.height()-4)
+                    .text(displayText);
+            }
+
+            AddXAxis(groupRowChart, "log10 number of genome");
+
         });
 
 /***************************************
@@ -190,28 +208,27 @@
 ****************************************/
 
 d3.csv("label_report_completeAssembly_count_above_0.csv", function(data){
-  var colorgen = d3.scale.ordinal()
-  .range(["#8dd3c7","#ffffb3","#bebada","#fb8072",
-    "#80b1d3","#fdb462","#b3de69","#fccde5",
-    "#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]); 
-  
+    
+    var colorgen = d3.scale.ordinal().range(
+        ["#8dd3c7","#ffffb3","#bebada","#fb8072",
+        "#80b1d3","#fdb462","#b3de69","#fccde5",
+        "#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]);
 
-  var color = function(d) { return colorgen(d.Group); };
+    var color = function(d) {return colorgen(d.Group);};
 
-  var parcoords = d3.parcoords()("#crisprParcoords")
-  .data(data)
-  .hideAxis(["RefseqID","AssemblyLevel"])
-  .color(color)
-  .alpha(0.30)
-  .composite("source-over")
-  .margin({ top: 20, left: 100, bottom: 10, right: 10 })
-  .mode("queue")
-  .render()
-  .brushMode("1D-axes");  // enable brushing
+    var parcoords = d3.parcoords()("#crisprParcoords")
+      .data(data)
+      .hideAxis(["RefseqID","AssemblyLevel"])
+      .color(color)
+      .alpha(0.30)
+      .composite("source-over")
+      .margin({ top: 20, left: 100, bottom: 10, right: 10 })
+      .mode("queue")
+      .render()
+      .brushMode("1D-axes");  // enable brushing
 
-
-  parcoords.svg.selectAll("text")
-  .style("font", "11px helvetica");
+    parcoords.svg.selectAll("text")
+        .style("font", "11px helvetica");
 
 });
 
