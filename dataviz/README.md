@@ -14,3 +14,6 @@ $ python -m http.server
 
 Then navigate with your browser to http://localhost:8000/dataviz.html
 
+**Preview**
+
+![visualization](parcord.jpg)
