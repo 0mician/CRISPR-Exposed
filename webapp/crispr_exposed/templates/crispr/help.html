@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Help{% endblock %}
+
+{% block body_block %}
+
+
+  <!-- Sidebar -->
+  <div class="col-md-2" id="leftCol">
+    <ul class="nav nav-stacked affix" id="sidebar">
+      <li><a href="#search">Search</a></li>
+      <li><a href="#blast">Blast</a></li>
+      <li><a href="#crt">CRISPR Finder</a></li>
+      <li><a href="#viz">Visualization</a></li>
+    </ul>
+  </div>
+
+  <!--**************-->
+  <!-- Page content -->
+  <!--**************-->
+  <div class="col-md-10">
+
+    <!--*******************-->
+    <!-- Section 1: Search -->
+    <!--*******************-->
+    <h3 id="search">Search</h3>
+    <p>
+      You can search for CRISPR array information in the home page which is quite straight forward. The CRISPR arrays are detected by <a href="http://www.room220.com/crt/">CRISPR Recognition Tool (CRT)</a> with default parameter settings as in <a href="#crt">CRISPR Finder</a>.
+    </p>
+    <br/>
+    <figure>
+      <img src="{% static 'help/searchStrain.png' %}" alt="blast" style="width:485px;height:335px;">
+      <figcaption>Figure: Example of search results</figcaption>
+    </figure> 
+    <hr>
+
+    <!--******************-->
+    <!-- Section 2: Blast -->
+    <!--******************-->
+    <h3 id="blast">Blast</h3>
+    <p>
+      You can blast any nucleotide sequence against the CRISPR Exposed to search for hit that matches any spacer sequence from this spacer database. The blast algorithm and approach is identical to that of blastn of NCBI, except that the content of database here is the spacers from CRISPR arrays from all prokaryotic genomes. For example, the figure below shows the nucleotide blast result of enterobacteria phage lambda.
+    </p>
+    <br/>
+    <figure>
+      <img src="{% static 'help/blastResult.png' %}" alt="blast" style="width:470px;height:324px;">
+      <figcaption>Figure: Example of blast results</figcaption>
+    </figure> 
+    <br/>
+    <p>
+      The definition of Score and E value are the same as NCBI blastn. E value represents the number of different alignments with scores equivalent to or better than S that is expected to occur in a database search by chance. The lower the E value, the more significant the score and the alignment.
+    </p>
+    <p>
+      The parameters used in alignment are listed at the bottom of the blast results page. The default parameters are:
+      <ul>
+        <li>Matrix: blastn matrix 1 -2</li>
+        <li>Gap penalties: Existence: 0, Extension: 2.5</li>
+      </ul> At the moment, the website is still under development and thus parameters for blast are not made customizable yet. 
+    </p>
+    <br/>
+    <hr>
+
+    <!--**************************-->
+    <!-- Section 3: CRISPR Finder -->
+    <!--**************************-->
+    <h3 id="crt">CRISPR Finder</h3>
+    <p>
+      You can paste sequence in fasta format or upload a fasta file to find CRISPR arrays. Software used here is <a href="http://www.room220.com/crt/">CRISPR Recognition Tool (CRT)</a>.
+      <ul>
+        <li> minimum number of repeats a CRISPR must contain = 3 </li>
+        <li> minimum length of a CRISPR's repeated region = 19 </li>
+        <li> maximum length of a CRISPR's repeated region = 38 </li>
+        <li> minimum length of a CRISPR's non-repeated region (or spacer region) = 19 </li>
+        <li> maximum length of a CRISPR's non-repeated region (or spacer region) = 48 </li>
+        <li> length of search window used to discover CRISPRs = range: 6-9 </li>
+      </ul>
+    </p>
+    <figure>
+      <img src="{% static 'help/crtResult.png' %}" alt="crt" style="width:554px;height:365px;">
+      <figcaption>Figure: Example of CRT results</figcaption>
+    </figure> 
+    <hr>
+    
+    <!--**************************-->
+    <!-- Section 4: Visualization -->
+    <!--**************************-->
+    <h3 id="viz">Visualization</h3>
+    <br/>
+    <p>
+      The visualization are created using libraries from <a href="http://d3js.org/">D3.js</a>.
+      <ul>
+        <li>Row chart and histograms: <a href="https://dc-js.github.io/dc.js/">dc.js</a> version 1.7.5</li>
+        <li>Parallel coordinates: <a href="http://syntagmatic.github.io/parallel-coordinates/">Parallel Coordinates</a> version 0.7.0</li>
+      </ul>
+    </p>
+    <br/>
+    <figure>
+      <img src="{% static 'help/dataviz.png' %}" alt="dataviz" style="width:790px;height:444px;">
+      <figcaption>Figure: Interactive visualization page of CRISPR-Exposed</figcaption>
+    </figure>              
+    <br/>
+    <h4>Row chart</h4>
+    <p>
+      The row chart shows the log10 number of genome sequences of each microbes group which were used to create the database. Each prokaryotic genome sequence is assigned to a group based on <a href="http://www.ncbi.nlm.nih.gov/genome/browse/">NCBI Genome</a> as of November 2015. 
+    </p>
+    <br/>
+    <h4>Histograms</h4>
+    <p>
+      The two histograms in the middle shows the distribution of CRISPR direct repeats' length and CRISPR spacers' length. <a href="http://www.room220.com/crt/">CRISPR Recognition Tool (CRT)</a> was used to detect CRISPR arrays from all the genome sequences. One strain of bacteria/archaea can contribute <i>n</i> number of distinct length <i>l</i> direct repeats and <i>m</i> number of distinct length <i>k</i> spacers to the database. 
+    </p>
+    <br/>
+    <h4>Parallel coordinates</h4>
+    <p>
+      The parallel coordinates display data from each dimension on different axis. The information used to create this data visualization consists of genome sequences with complete assembly level and contain at least one CRISPR array detected by CRT.
+    </p>
+    <br/>
+    <h4>Filtering information</h4>
+    <p>
+      The interactive plots in data visualization page can be splitted into two parts which are independent from each other. Information in the row chart is linked to the two histograms next to it whereas parallel coordinates remain as an independent display. 
+    </p>
+    <br/>
+    <p>
+      For instance, selecting "Firmicutes" in the row chart will display the distribution of CRISPR repeats' length and spacers' length of Firmicutes on the two histograms. This selection does not affect the display on parallel coordinates as it uses independent data set.
+      <figure>
+        <img src="{% static 'help/rowChartSelection.png' %}" alt="row chart" style="width:372px;height:442px;">
+        <figcaption>Selecting microbes' group in row chart will display corresponding CRISPR direct repeats' length and spacers' length in histograms
+        </figcaption>
+      </figure>
+    </p>
+    <br/>
+    <p>
+      Filtering information from both row chart and histograms simultaneously is possible.
+      <figure>
+        <img src="{% static 'help/histogramSelection.png' %}" alt="histogram and row chart" style="width:367px;height:443px;">
+        <figcaption>Selecting microbes' group in row chart and range of direct repeats' length will display corresponding distribution of spacers' length.
+        </figcaption>
+      </figure>
+    </p>
+    <p>
+      Interactivity of parallel coordinates is independent of the other plots. Selecting range of information in multiple axis in parallel coordinates is possible and will not affect the display in row chart and histograms.
+    </p>
+    <figure>
+      <img src="{% static 'help/parcoordSelection.png' %}" alt="parallel coordinates" style="width:385px;height:411px;">
+      <figcaption>Selecting microbes' group in row chart and range of direct repeats' length will display corresponding distribution of spacers' length.
+      </figcaption>
+    </figure>
+    
+    <hr>
+  </div>
+
+{% endblock %}
