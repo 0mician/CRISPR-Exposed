@@ -1,5 +1,11 @@
 .dc-chart g.row text {
-    fill: grey;
+    fill: Black ;
     font-size: 12px;
     cursor: pointer;
 }
+
+.dc-chart g.row rect { 
+	fill-opacity: .6;
+	stroke: none; 
+	cursor: pointer; 
+} 
