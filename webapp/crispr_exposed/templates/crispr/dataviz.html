@@ -45,7 +45,7 @@
     
     
     /* load data */
-    d3.csv("{% static 'dataviz/label_reducedslrl.csv' %}", function(error, label_reducedslrl) {
+    d3.csv("{% static 'dataviz/label_reducedslrl_removedFP.csv' %}", function(error, label_reducedslrl) {
     
     
     /* set crossfilter */
@@ -69,7 +69,7 @@
         groupRowChart
         .width(200)
         .height(600)
-        .margins({left: 5, top: 10, right: 5, bottom:40})
+        .margins({left: 10, top: 10, right: 5, bottom:40})
         .dimension(groupDimension)
         .renderTitle(true)
         .renderLabel(true)
@@ -77,71 +77,70 @@
         .elasticX(true)
         .group(groupSum)
         .xAxis().ticks(2)
-        //.ordinalColors(["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"])
 
         groupRowChart.renderlet(function(chart){
             chart.selectAll("g.row rect").attr("fill", function(d){
                 switch(d.key){
                     case "Actinobacteria":
-                        return "#bebada";
+                        return "#d53e4f";
                     case "Aquificae":
-                        return "#ffed6f";
+                        return "#f46d43";
                     case "Bacteroidetes/Chlorobi  ":
-                        return "#80b1d3";
+                        return "#fdae61";
                     case "Caldiserica":
-                        return "#fb8072";
+                        return "#fee08b";
                     case "Chlamydiae/Verrucomicrobia  ":
                         return "#fdb462";
                     case "Chloroflexi":
-                        return "#8dd3c7";
+                        return "#ffffbf";
                     case "Chrysiogenetes":
-                        return "#ccebc5"; 
+                        return "#e6f598"; 
                     case "Crenarchaeota":
-                        return "#fdb462";
+                        return "#abdda4";
                     case "Cyanobacteria":
-                        return "#ffffb3";
+                        return "#66c2a5";
                     case "Deferribacteres":
-                        return "#bebada";
+                        return "#3288bd";
                     case "Deinococcus-Thermus":
-                        return "#d9d9d9";
+                        return "#66c2a5";
                     case "Dictyoglomi":
-                        return "#fccde5";
+                        return "#abdda4";
                     case "Elusimicrobia":
-                        return "#b3de69";
+                        return "#e6f598";
                     case "Euryarchaeota":
-                        return "#ffffb3";
+                        return "#ffffbf";
                     case "Fibrobacteres/Acidobacteria  ":
-                        return "#fb8072";
+                        return "#fee08b";
                     case "Firmicutes":
-                        return "#fb8072";
+                        return "#fdae61";
                     case "Fusobacteria":
-                        return "#b3de69";
+                        return "#f46d43";
                     case "Gemmatimonadetes":
-                        return "#8dd3c7";            
+                        return "#d53e4f";
                     case "Korarchaeota":
-                        return "#80b1d3";
+                        return "#f46d43";
                     case "Nitrospirae":
-                        return "#d9d9d9";
+                        return "#fdae61";
                     case "Planctomycetes":
-                        return "#d9d9d9";
+                        return "#fee08b";
                     case "Proteobacteria":
-                        return "#8dd3c7";
+                        return "#ffffbf";
                     case "Spirochaetes":
-                        return "#fccde5";
+                        return "#e6f598";
                     case "Synergistetes":
-                        return "#ffed6f";
+                        return "#abdda4";
                     case "Tenericutes":
-                        return "#bc80bd";
+                        return "#66c2a5";
                     case "Thaumarchaeota":
-                        return "#80b1d3";
+                        return "#3288bd";
                     case "Thermodesulfobacteria":
-                        return "#fdb462";
+                        return "#66c2a5";
                     case "Thermotogae":
-                        return "#ccebc5";
+                        return "#abdda4";
                     case "unclassified Archaea":
-                        return "#d9d9d9";
+                        return "#e6f598";
                     case "unclassified Bacteria":
-                        return "#fccde5";
+                        return "#ffffbf";
                 }
             });
         })
@@ -164,17 +163,13 @@
             .height(250)
             .margins({left: 50, top: 20, right: 20, bottom: 50})
             .dimension(spacerLengthDimension)
-            .x(d3.scale.log())
+            .x(d3.scale.linear())
             .yAxisLabel("Count")
             .xAxisLabel("Length of spacer (bp)")
             .elasticY(true)
             .elasticX(true)
             .brushOn(true)
             .group(spacerLengthSum)
-            .renderlet(function (chart) {
-            // rotate x-axis labels
-            chart.selectAll('g.x text')
-            .attr('transform', 'translate(-10,20) rotate(270)');})
 
             dc.renderAll();
 
