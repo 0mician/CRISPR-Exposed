@@ -15,12 +15,12 @@ def index(request):
     strain_list = Strain.objects.values('organism_name').order_by('organism_name')
     
     ## generate a uniq list of organism names
-    uniq_name_list = []
+    genus_list = []
     for item in strain_list:
-        uniq_name_list.append(item['organism_name'].split()[0] + ' ' + item['organism_name'].split()[1])
-    uniq_name_list = sorted(set(uniq_name_list))
+        genus_list.append(item['organism_name'].split()[0])# + ' ' + item['organism_name'].split()[1])
+    genus_list = sorted(set(genus_list))
     
-    return render(request, "crispr/index.html", {'uniq_name_list' : uniq_name_list})
+    return render(request, "crispr/index.html", {'genus_list' : genus_list})
 
 def about(request):
     return render(request, "crispr/about.html")
