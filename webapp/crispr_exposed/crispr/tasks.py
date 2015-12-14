@@ -35,10 +35,20 @@ def blastn(FASTA):
     return blast_result_txt
 
 @task()
-def crt(FASTA):
+def crt(FASTA, parameters={}):
     
     ## path to the crt tool
     crt = "../../configuration/tools/CRT1.2-CLI.jar"
+    
+    ## retrieving parameters
+    minNR = parameters["para1"]
+    minRL = parameters["para2"]
+    maxRL = parameters["para3"]
+    minSL = parameters["para4"]
+    maxSL = parameters["para5"]
+    searchWL = parameters["para6"]      ##not used atm
+    
+    crt_options = "-minNR {minNR} -minRL {minRL} -maxRL {maxRL} -minSL {minSL} -maxSL {maxSL} ".format(**locals())
     
     ## generating random file names
     fasta_temp = tempfile.NamedTemporaryFile()
@@ -52,7 +62,7 @@ def crt(FASTA):
     fasta_file.close()
     
     ## crt command
-    exit_code = os.system('java -cp ' + crt + ' crt ' + fasta_temp_path + ' ' + crt_report_path + '>> crt.log 2>&1')
+    exit_code = os.system('java -cp ' + crt + ' crt ' + crt_options + fasta_temp_path + ' ' + crt_report_path + '>> crt.log 2>&1')
     
     ## reads crt output into memory
     crt_report_txt = ''

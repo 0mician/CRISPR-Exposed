@@ -112,8 +112,17 @@ def crt_result(request):
     if request.POST['input_seq']:
         FASTA = request.POST.get('input_seq')
         
+        ## retrieving CRT parameters from POST request
+        parameters = {}
+        parameters['para1'] = request.POST.get('para1')
+        parameters['para2'] = request.POST.get('para2')
+        parameters['para3'] = request.POST.get('para3')
+        parameters['para4'] = request.POST.get('para4')
+        parameters['para5'] = request.POST.get('para5')
+        parameters['para6'] = request.POST.get('para6')
+        
         ## from tasks.py
-        crt_result = crt.delay(FASTA)
+        crt_result = crt.delay(FASTA, parameters)
         
         try:
             crt_result.get(timeout = 20, interval = 1)    ## set timeout = 300 seconds and wait time = 1 sec
