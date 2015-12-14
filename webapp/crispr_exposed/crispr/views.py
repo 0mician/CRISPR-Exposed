@@ -25,6 +25,9 @@ def index(request):
 def about(request):
     return render(request, "crispr/about.html")
 
+def help(request):
+    return render(request, "crispr/help.html")
+
 def visualization(request):
     return render(request, "crispr/dataviz.html")
 
