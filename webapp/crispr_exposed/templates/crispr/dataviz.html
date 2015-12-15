@@ -45,7 +45,7 @@
     
     
     /* load data */
-    d3.csv("{% static 'dataviz/label_reducedslrl_removedFP.csv' %}", function(error, label_reducedslrl) {
+    d3.csv("{% static 'dataviz/label_reducedslrl_removedFP_copy.csv' %}", function(error, label_reducedslrl) {
     
     
     /* set crossfilter */
@@ -53,7 +53,7 @@
 
 
         /* dimension */
-        groupDimension          = data.dimension(function(d){return d.Group;}),
+        groupDimension          = data.dimension(function(d){return d.Kingdom_Group;}),
         repeatLengthDimension   = data.dimension(function(d){return +d.Repeat_length;}),
         spacerLengthDimension   = data.dimension(function(d){return +d.Spacer_length;});
 
@@ -73,77 +73,27 @@
         .dimension(groupDimension)
         .renderTitle(true)
         .renderLabel(true)
-        .label(function (d){return d.key})
+        .label(function (d){return d.key.match(/.*_(.*)/)[1];})
         .elasticX(true)
         .group(groupSum)
         .xAxis().ticks(2)
 
         groupRowChart.renderlet(function(chart){
             chart.selectAll("g.row rect").attr("fill", function(d){
-                switch(d.key){
-                    case "Actinobacteria":
-                        return "#d53e4f";
-                    case "Aquificae":
-                        return "#f46d43";
-                    case "Bacteroidetes/Chlorobi  ":
-                        return "#fdae61";
-                    case "Caldiserica":
-                        return "#fee08b";
-                    case "Chlamydiae/Verrucomicrobia  ":
-                        return "#fdb462";
-                    case "Chloroflexi":
-                        return "#ffffbf";
-                    case "Chrysiogenetes":
-                        return "#e6f598"; 
-                    case "Crenarchaeota":
-                        return "#abdda4";
-                    case "Cyanobacteria":
-                        return "#66c2a5";
-                    case "Deferribacteres":
-                        return "#3288bd";
-                    case "Deinococcus-Thermus":
-                        return "#66c2a5";
-                    case "Dictyoglomi":
-                        return "#abdda4";
-                    case "Elusimicrobia":
-                        return "#e6f598";
-                    case "Euryarchaeota":
-                        return "#ffffbf";
-                    case "Fibrobacteres/Acidobacteria  ":
-                        return "#fee08b";
-                    case "Firmicutes":
-                        return "#fdae61";
-                    case "Fusobacteria":
-                        return "#f46d43";
-                    case "Gemmatimonadetes":
-                        return "#d53e4f";
-                    case "Korarchaeota":
-                        return "#f46d43";
-                    case "Nitrospirae":
-                        return "#fdae61";
-                    case "Planctomycetes":
-                        return "#fee08b";
-                    case "Proteobacteria":
-                        return "#ffffbf";
-                    case "Spirochaetes":
-                        return "#e6f598";
-                    case "Synergistetes":
-                        return "#abdda4";
-                    case "Tenericutes":
-                        return "#66c2a5";
-                    case "Thaumarchaeota":
-                        return "#3288bd";
-                    case "Thermodesulfobacteria":
-                        return "#66c2a5";
-                    case "Thermotogae":
-                        return "#abdda4";
-                    case "unclassified Archaea":
-                        return "#e6f598";
-                    case "unclassified Bacteria":
-                        return "#ffffbf";
+                //return "#abd9e9";
+                var kingdom = d.key.match(/.*_(.*)/)[1];
+                if( kingdom == "Crenarchaeota" ||
+                    kingdom == "Euryarchaeota" || 
+                    kingdom == "Korarchaeota" ||
+                    kingdom == "Thaumarchaeota" ||
+                    kingdom == "unclassified Archaea")
+                {
+                    return "#fcbba1";
+                } else {
+                    return "#abd9e9";
                 }
             });
-        })
+        });
 
             repeatHistogram
             .width(250)
@@ -197,22 +147,20 @@
 d3.csv("{% static 'dataviz/label_report_completeAssembly_count_above_0.csv' %}", function(data){
     
     var colorgen = d3.scale.ordinal().range(
-        ["#8dd3c7","#ffffb3","#bebada","#fb8072",
-        "#80b1d3","#fdb462","#b3de69","#fccde5",
-        "#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]);
+        ["#fcbba1", "#313695"]);
 
-    var color = function(d) {return colorgen(d.Group);};
-
+    var color = function(d) {return colorgen(d.Kingdom);};
     var parcoords = d3.parcoords()("#crisprParcoords")
       .data(data)
-      .hideAxis(["RefseqID","AssemblyLevel"])
+      .hideAxis(["RefseqID","AssemblyLevel","Kingdom"])
       .color(color)
-      .alpha(0.30)
-      .composite("source-over")
+      .alpha(0.20)
+      .composite("darker")
       .margin({ top: 20, left: 100, bottom: 10, right: 10 })
       .mode("queue")
       .render()
-      .brushMode("1D-axes");  // enable brushing
+      .brushMode("1D-axes")  // enable brushing
+      .reorderable();
 
     parcoords.svg.selectAll("text")
         .style("font", "11px helvetica");
