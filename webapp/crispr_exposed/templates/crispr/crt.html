@@ -20,6 +20,45 @@
             <span class="file-custom"></span>
         </label>
     </div>
+    
+    <div>
+        
+        <h3>Parameters: </h3>
+        
+        <table style="width:100%">
+        <tr>
+            <td>
+            <label for="para1">min number of repeats a CRISPR must contain:</label>
+            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' size=1 maxlength=2 name="para1" id="para1" value="3"></input>
+            </td>
+            <td>
+            <label for="para2">min length of a CRISPR's repeated region:</label>
+            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' size=1 maxlength=2 name="para2" id="para2" value="19"></input>
+            </td>
+            <td>
+            <label for="para3">max length of a CRISPR's repeated region:</label>
+            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' size=1 maxlength=2 name="para3" id="para3" value="38"></input>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <label for="para4">min length of a CRISPR's spacer region:</label>
+            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' size=1 maxlength=2 name="para4" id="para4" value="19"></input>
+            </td>
+            <td>
+            <label for="para5">max length of a CRISPR's spacer region:</label>
+            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' size=1 maxlength=2 name="para5" id="para5" value="48"></input>
+            </td>
+            <td>
+            <label for="para6">length of search window used to discover CRISPRs (6-9):</label>
+            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' size=1 maxlength=1 name="para6" id="para6" value="6"></input>
+            </td>
+        </tr>
+        
+        </table>
+    
+    </div>
+    
     <button class="btn btn-primary" type="submit">Find</button>
     {% csrf_token %}
   </form>

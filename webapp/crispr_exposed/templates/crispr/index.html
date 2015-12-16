@@ -11,12 +11,12 @@
   <form method="post" action="/crispr/search_result/">
     
     <div class="form-group">        
-        <label for="SearchByOrganism">Organism Name:</label>
+        <label for="SearchByOrganism">Genus</label>
         <br/>
         
         <select class="select-picker" name="organism_name">
             <option value=" " selected>All Organisms</option>
-            {% for strain in uniq_name_list %}
+            {% for strain in genus_list %}
                 <option>{{ strain }}</option>
             {% endfor %}
         </select>
